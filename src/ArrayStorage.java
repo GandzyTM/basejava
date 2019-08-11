@@ -13,9 +13,9 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        int fe = findElement(uuid);
-        if (fe != -1) {
-            return storage[fe];
+        int index = findElement(uuid);
+        if (index != -1) {
+            return storage[index];
         }
         return null;
     }
@@ -34,9 +34,13 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         for (int k = findElement(uuid); k < incSize - 1; k++) {
-            storage[k] = storage[k + 1];
+            if (storage[k].uuid.equals(uuid)) {
+                storage[k] = storage[k + 1];
+                incSize--;
+            } else {
+                System.out.println(uuid + " didn't in Resume storage");
+            }
         }
-        incSize--;
     }
 
     void clear() {
@@ -44,13 +48,15 @@ public class ArrayStorage {
         incSize = 0;
     }
 
-    void update(String uuid) {
+    void update(Resume resume) {
+        // delete
+        // insert or save
 
     }
 
     private int findElement(String uuid) {
         for (int i = 0; i < incSize; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
+            if (storage[i].uuid.equals(uuid)) {
                 return i;
             }
         }
