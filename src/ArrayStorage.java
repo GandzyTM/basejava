@@ -34,7 +34,7 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         for (int k = findElement(uuid); k < incSize - 1; k++) {
-            if (storage[k].uuid.equals(uuid)) {
+            if (storage[k].getUuid().equals(uuid)) {
                 storage[k] = storage[k + 1];
                 incSize--;
             } else {
@@ -56,7 +56,7 @@ public class ArrayStorage {
 
     private int findElement(String uuid) {
         for (int i = 0; i < incSize; i++) {
-            if (storage[i].uuid.equals(uuid)) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }
