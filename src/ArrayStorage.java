@@ -36,14 +36,19 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = findElement(uuid); i < size - 1; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                int var3 = size - findElement(uuid) - 1;
-                System.arraycopy(storage, i + 1, storage, findElement(uuid), var3);
-                size--;
-            } else {
-                System.out.println(uuid + " didn't in Resume storage");
+        int index = findElement(uuid);
+        if (index != -1) {
+            for (int i = index; i < size - 1; i++) {
+                if (storage[i].getUuid().equals(uuid)) {
+                    int var3 = size - index - 1;
+                    System.arraycopy(storage, i + 1, storage, index, var3);
+                    size--;
+                } else {
+                    System.out.println(uuid + " didn't in Resume storage");
+                }
             }
+        } else {
+            System.out.println(uuid + " didn't in Resume storage");
         }
     }
 
