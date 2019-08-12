@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 
 /**
  * Array based storage for Resumes
@@ -8,13 +9,12 @@ public class ArrayStorage {
     int size = 0;
 
     void save(Resume r) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(r.getUuid())) {
-                storage[size] = r;
-                size++;
-            } else {
-                System.out.println(r.getUuid() + " is in storage");
-            }
+        int index = findElement(r.getUuid());
+        if (index == -1 || size > storage.length) {
+            storage[size] = r;
+            size++;
+        } else {
+            System.out.println(r.getUuid() + " is in storage");
         }
     }
 
@@ -22,12 +22,10 @@ public class ArrayStorage {
         int index = findElement(uuid);
         if (index != -1) {
             return storage[index];
+        } else {
+            System.out.println(uuid + " not in Resume storage");
         }
         return null;
-    }
-
-    int size() {
-        return size;
     }
 
     /**
@@ -39,12 +37,29 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = findElement(uuid); i < size - 1; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                storage[i] = storage[i + 1];
-                size--;
-            } else {
-                System.out.println(uuid + " didn't in Resume storage");
+        int index = findElement(uuid);
+        if (index != -1) {
+            for (int i = index; i < size - 1; i++) {
+                if (storage[i].getUuid().equals(uuid)) {
+                    storage[i] = storage[size - 1];
+                    storage[size - 1] = null;
+//                    int var3 = size - index - 1;
+//                    System.arraycopy(storage, i + 1, storage, index, var3);
+                    size--;
+                } else {
+                    System.out.println(uuid + " not in Resume storage");
+                }
+            }
+        } else {
+            System.out.println(uuid + " not in Resume storage");
+        }
+    }
+
+    void update(Resume resume) {
+        int index = findElement(resume.getUuid());
+        for (int i = index; i < size; i++) {
+            if (storage[i].getUuid().equals(resume.getUuid())) {
+                storage[i] = resume;
             }
         }
     }
@@ -54,14 +69,8 @@ public class ArrayStorage {
         size = 0;
     }
 
-    void update(Resume resume) {
-        // delete
-        delete(resume.getUuid());
-        // insert or save
-        for (int i = 0; i < size; i++) {
-
-        }
-
+    int size() {
+        return size;
     }
 
     private int findElement(String uuid) {
