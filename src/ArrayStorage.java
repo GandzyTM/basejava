@@ -56,10 +56,12 @@ public class ArrayStorage {
     }
 
     void update(Resume resume) {
+        System.out.println("update: " + resume);
         int index = findElement(resume.getUuid());
         for (int i = index; i < size; i++) {
             if (storage[i].getUuid().equals(resume.getUuid())) {
                 storage[i] = resume;
+//                System.out.println("updated " + storage[i]);
             }
         }
     }
