@@ -1,29 +1,30 @@
 import java.util.Arrays;
-import java.util.ArrayList;
 
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int size = 0;
+    private Resume[] storage = new Resume[3];
+    private int size = 0;
 
-    void save(Resume r) {
-        int index = findElement(r.getUuid());
-        if (index == -1 || size > storage.length) {
-            storage[size] = r;
+    public void save(Resume resume) {
+        int index = findIndex(resume.getUuid());
+        if (storage.length * .99 <= size) {
+            System.out.println("Can't save " + resume.getUuid() + " because resume storage is full");
+        } else if(index == -1) {
+            storage[size] = resume;
             size++;
         } else {
-            System.out.println(r.getUuid() + " is in storage");
+            System.out.println("Resume " + resume.getUuid() + " already exists in storage");
         }
     }
 
-    Resume get(String uuid) {
-        int index = findElement(uuid);
+    public Resume get(String uuid) {
+        int index = findIndex(uuid);
         if (index != -1) {
             return storage[index];
         } else {
-            System.out.println(uuid + " not in Resume storage");
+            System.out.println("Resume " + uuid + " not exist in storage");
         }
         return null;
     }
@@ -31,51 +32,40 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
-//        return new Resume[0];
     }
 
-    void delete(String uuid) {
-        int index = findElement(uuid);
+    public void delete(String uuid) {
+        int index = findIndex(uuid);
         if (index != -1) {
-            for (int i = index; i < size - 1; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    storage[i] = storage[size - 1];
-                    storage[size - 1] = null;
-//                    int var3 = size - index - 1;
-//                    System.arraycopy(storage, i + 1, storage, index, var3);
-                    size--;
-                } else {
-                    System.out.println(uuid + " not in Resume storage");
-                }
-            }
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
         } else {
-            System.out.println(uuid + " not in Resume storage");
+            System.out.println("Resume " + uuid + " not exist in storage");
         }
     }
 
-    void update(Resume resume) {
-        System.out.println("update: " + resume);
-        int index = findElement(resume.getUuid());
-        for (int i = index; i < size; i++) {
-            if (storage[i].getUuid().equals(resume.getUuid())) {
-                storage[i] = resume;
-//                System.out.println("updated " + storage[i]);
-            }
+    public void update(Resume resume) {
+        int index = findIndex(resume.getUuid());
+        if (index != -1) {
+            storage[index] = resume;
+        } else {
+            System.out.println("Resume " + resume.getUuid() + " not exist in storage");
         }
     }
 
-    void clear() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    int size() {
+    public int size() {
         return size;
     }
 
-    private int findElement(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
