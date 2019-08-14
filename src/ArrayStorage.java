@@ -4,14 +4,13 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[3];
+    private Resume[] storage = new Resume[10000];
     private int size = 0;
 
     public void save(Resume resume) {
-        int index = findIndex(resume.getUuid());
         if (storage.length * .99 <= size) {
             System.out.println("Can't save " + resume.getUuid() + " because resume storage is full");
-        } else if(index == -1) {
+        } else if (findIndex(resume.getUuid()) == -1) {
             storage[size] = resume;
             size++;
         } else {
