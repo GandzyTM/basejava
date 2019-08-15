@@ -8,7 +8,7 @@ public class ArrayStorage {
     private int size = 0;
 
     public void save(Resume resume) {
-        if (storage.length * .99 <= size) {
+        if (storage.length <= size) {
             System.out.println("Can't save " + resume.getUuid() + " because resume storage is full");
         } else if (findIndex(resume.getUuid()) == -1) {
             storage[size] = resume;
