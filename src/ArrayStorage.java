@@ -22,9 +22,8 @@ public class ArrayStorage {
         int index = findIndex(uuid);
         if (index != -1) {
             return storage[index];
-        } else {
-            System.out.println("Resume " + uuid + " not exist in storage");
         }
+        System.out.println("Resume " + uuid + " not exist in storage");
         return null;
     }
 
