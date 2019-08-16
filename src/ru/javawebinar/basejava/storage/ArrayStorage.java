@@ -1,4 +1,7 @@
+package ru.javawebinar.basejava.storage;
+
 import java.util.Arrays;
+import ru.javawebinar.basejava.model.Resume;
 
 /**
  * Array based storage for Resumes
@@ -7,59 +10,59 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int size = 0;
 
-    protected void save(Resume resume) {
+    public void save(Resume resume) {
         if (size >= storage.length) {
             System.out.println("Can't save " + resume.getUuid() + " because resume storage is full");
         } else if (findIndex(resume.getUuid()) == -1) {
             storage[size] = resume;
             size++;
         } else {
-            System.out.println("Resume " + resume.getUuid() + " already exists in storage");
+            System.out.println("ru.javawebinar.basejava.model.Resume " + resume.getUuid() + " already exists in storage");
         }
     }
 
-    protected Resume get(String uuid) {
+    public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index != -1) {
             return storage[index];
         }
-        System.out.println("Resume " + uuid + " not exist in storage");
+        System.out.println("ru.javawebinar.basejava.model.Resume " + uuid + " not exist in storage");
         return null;
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    protected Resume[] getAll() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    protected void delete(String uuid) {
+    public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index != -1) {
             size--;
             storage[index] = storage[size];
             storage[size] = null;
         } else {
-            System.out.println("Resume " + uuid + " not exist in storage");
+            System.out.println("ru.javawebinar.basejava.model.Resume " + uuid + " not exist in storage");
         }
     }
 
-    protected void update(Resume resume) {
+    public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index != -1) {
             storage[index] = resume;
         } else {
-            System.out.println("Resume " + resume.getUuid() + " not exist in storage");
+            System.out.println("ru.javawebinar.basejava.model.Resume " + resume.getUuid() + " not exist in storage");
         }
     }
 
-    protected void clear() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    protected int size() {
+    public int size() {
         return size;
     }
 
