@@ -7,8 +7,8 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[10_000];
     private int size = 0;
 
-    public void save(Resume resume) {
-        if (storage.length <= size) {
+    protected void save(Resume resume) {
+        if (size >= storage.length) {
             System.out.println("Can't save " + resume.getUuid() + " because resume storage is full");
         } else if (findIndex(resume.getUuid()) == -1) {
             storage[size] = resume;
@@ -18,7 +18,7 @@ public class ArrayStorage {
         }
     }
 
-    public Resume get(String uuid) {
+    protected Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index != -1) {
             return storage[index];
@@ -31,22 +31,22 @@ public class ArrayStorage {
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public Resume[] getAll() {
+    protected Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    public void delete(String uuid) {
+    protected void delete(String uuid) {
         int index = findIndex(uuid);
+        size--;
         if (index != -1) {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
+            storage[index] = storage[size];
+            storage[size] = null;
         } else {
             System.out.println("Resume " + uuid + " not exist in storage");
         }
     }
 
-    public void update(Resume resume) {
+    protected void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index != -1) {
             storage[index] = resume;
@@ -55,12 +55,12 @@ public class ArrayStorage {
         }
     }
 
-    public void clear() {
+    protected void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public int size() {
+    protected int size() {
         return size;
     }
 
