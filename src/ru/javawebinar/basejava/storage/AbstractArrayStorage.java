@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage{
     protected static final int STORAGE_LIMIT = 10_000;
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    public Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     public int size() {
@@ -25,24 +25,33 @@ public abstract class AbstractArrayStorage implements Storage{
     public void save(Resume resume) {
         if (size >= STORAGE_LIMIT) {
             System.out.println("Can't save " + resume.getUuid() + " because resume storage is full");
-        } else if (findIndex(resume.getUuid()) == -1) {
-            storage[size] = resume;
-            size++;
         } else {
-            System.out.println("Resume " + resume.getUuid() + " already exists in storage");
+            int index = findIndex(resume.getUuid());
+            if (index == -1) {
+                saveElement(resume, size);
+//                storage[size] = resume;
+                size++;
+            } else {
+                System.out.println("Resume " + resume.getUuid() + " already exists in storage");
+            }
         }
     }
+
+    protected abstract void saveElement(Resume resume, int index);
 
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index != -1) {
             size--;
-            storage[index] = storage[size];
+            deleteFillElement(index); // changed place for implements
+            //storage[index] = storage[size];
             storage[size] = null;
         } else {
             System.out.println("Resume " + uuid + " not exist in storage");
         }
     }
+
+    protected abstract void deleteFillElement(int size);
 
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
