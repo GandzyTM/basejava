@@ -43,7 +43,7 @@ public abstract class AbstractArrayStorage implements Storage{
         int index = findIndex(uuid);
         if (index != -1) {
             size--;
-            deleteFillElement(index); // changed place for implements
+            deleteElement(index); // changed place for implements
             //storage[index] = storage[size];
             storage[size] = null;
         } else {
@@ -51,7 +51,7 @@ public abstract class AbstractArrayStorage implements Storage{
         }
     }
 
-    protected abstract void deleteFillElement(int size);
+    protected abstract void deleteElement(int size);
 
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());

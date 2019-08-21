@@ -34,6 +34,8 @@ public class MainTestSortedArrayStorage {
         r9.setUuid("uuid9");
         Resume r10 = new Resume();
         r10.setUuid("uuid10");
+        Resume r11 = new Resume();
+        r11.setUuid("uuid11");
 
         ARRAY_STORAGE.save(r1); // 0
         ARRAY_STORAGE.save(r2); // 1
@@ -45,14 +47,19 @@ public class MainTestSortedArrayStorage {
         ARRAY_STORAGE.save(r8); // 7
         ARRAY_STORAGE.save(r9); // 8
         ARRAY_STORAGE.save(r10); // 9
+        ARRAY_STORAGE.save(r11); // 10
+// testing
+        System.out.println("Index of r6: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r6));
+        System.out.println("Index of r7: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r7));
+        System.out.println("Index of r9: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r9));
+        System.out.println("Index of r10: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r10));
+        System.out.println("Index of r11: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r11));
+// testing end
 
         System.out.println("Get r3: " + ARRAY_STORAGE.get(r3.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
-// testing
-        System.out.println("Index of r9: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r9));
-// testing end
         printAll();
         ARRAY_STORAGE.delete(r3.getUuid());
         printAll();

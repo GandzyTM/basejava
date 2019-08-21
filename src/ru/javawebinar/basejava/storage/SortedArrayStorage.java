@@ -12,7 +12,7 @@ public class SortedArrayStorage extends AbstractArrayStorage{
     }
 
     @Override
-    protected void deleteFillElement(int size) {
+    protected void deleteElement(int size) {
 
     }
 
