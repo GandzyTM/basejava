@@ -1,9 +1,11 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Comparator;
+
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume>{
+public class Resume implements Comparable<Resume>, Comparator<Resume> {
 
     // Unique identifier
     public String uuid;
@@ -34,6 +36,11 @@ public class Resume implements Comparable<Resume>{
     @Override
     public String toString() {
         return uuid;
+    }
+
+    @Override
+    public int compare(Resume resume1, Resume resume2) {
+        return resume1.uuid.compareTo(resume2.uuid);
     }
 
     @Override
