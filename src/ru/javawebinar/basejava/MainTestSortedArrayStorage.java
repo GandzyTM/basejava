@@ -1,17 +1,14 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.ArrayStorage;
 import ru.javawebinar.basejava.storage.SortedArrayStorage;
 import ru.javawebinar.basejava.storage.Storage;
-
-import java.util.Arrays;
 
 /**
  * Test for your ru.javawebinar.basejava.storage.ArrayStorage implementation
  */
 public class MainTestSortedArrayStorage {
-    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
@@ -49,11 +46,12 @@ public class MainTestSortedArrayStorage {
         ARRAY_STORAGE.save(r10); // 9
         ARRAY_STORAGE.save(r11); // 10
 // testing
-        System.out.println("Index of r6: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r6));
-        System.out.println("Index of r7: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r7));
-        System.out.println("Index of r9: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r9));
-        System.out.println("Index of r10: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r10));
-        System.out.println("Index of r11: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r11));
+//        System.out.println("Index of r6: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r6));
+//        System.out.println("Index of r7: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r7));
+//        System.out.println("Index of r9: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r9));
+//        System.out.println("Index of r10: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r10));
+//        System.out.println("Index of r11: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r11));
+//        System.out.println(r5.compareTo(r11));
 // testing end
 
         System.out.println("Get r3: " + ARRAY_STORAGE.get(r3.getUuid()));
