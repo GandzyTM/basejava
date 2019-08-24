@@ -5,9 +5,10 @@ import java.util.Comparator;
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume>, Comparator<Resume> {
+public class Resume implements Comparable<Resume> {
 
     // Unique identifier
+
     public String uuid;
 
     public String getUuid() {
@@ -17,6 +18,7 @@ public class Resume implements Comparable<Resume>, Comparator<Resume> {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -39,12 +41,7 @@ public class Resume implements Comparable<Resume>, Comparator<Resume> {
     }
 
     @Override
-    public int compare(Resume resume1, Resume resume2) {
-        return resume1.uuid.compareTo(resume2.uuid);
-    }
-
-    @Override
     public int compareTo(Resume o) {
-        return uuid.compareTo(o.uuid);
+        return this.uuid.compareTo(o.uuid);
     }
 }
