@@ -1,11 +1,20 @@
 package ru.javawebinar.basejava.model;
 
 import java.util.Comparator;
+import java.util.UUID;
 
 /**
  * Initial resume class
  */
 public class Resume implements Comparable<Resume> {
+
+    protected Resume(){
+        this(UUID.randomUUID().toString());
+    }
+
+    public Resume(String uuid) {
+        this.uuid = uuid;
+    }
 
     // Unique identifier
 
