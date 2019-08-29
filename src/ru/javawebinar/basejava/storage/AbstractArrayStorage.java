@@ -12,12 +12,12 @@ public abstract class AbstractArrayStorage implements Storage{
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    public void save(Resume resume) {
-        if (size >= STORAGE_LIMIT) {
+        public void save(Resume resume) {
+        if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {
             int index = findIndex(resume.getUuid());
-            if (index < 0) {
+            if (index <= 0) {
                 saveElement(resume, index); // changed code for child classes
                 //storage[size] = resume;
                 size++;
@@ -45,7 +45,7 @@ public abstract class AbstractArrayStorage implements Storage{
 
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
-        if (index != -1) {
+        if (index > 0) {
             storage[index] = resume;
             System.out.println("Resume " + resume.getUuid() + " updated");
         } else {
