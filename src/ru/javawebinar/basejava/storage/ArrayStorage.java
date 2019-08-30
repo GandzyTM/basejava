@@ -2,9 +2,6 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-/**
- * Array based storage for Resumes
- */
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
@@ -17,9 +14,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         storage[index] = storage[size];
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     @Override
     protected int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
