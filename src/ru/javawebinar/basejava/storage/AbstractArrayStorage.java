@@ -12,6 +12,7 @@ public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    @Override
     public void save(Resume resume) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
@@ -28,6 +29,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void saveElement(Resume resume, int index);
 
+    @Override
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index > 0) {
@@ -41,6 +43,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract void deleteElement(int index);
 
+    @Override
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index != -1) {
@@ -51,19 +54,23 @@ public abstract class AbstractArrayStorage implements Storage {
         }
     }
 
+    @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index != -1) {
