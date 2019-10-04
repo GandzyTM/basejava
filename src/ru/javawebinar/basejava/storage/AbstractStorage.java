@@ -2,27 +2,38 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import static ru.javawebinar.basejava.storage.AbstractArrayStorage.STORAGE_LIMIT;
-
 public abstract class AbstractStorage implements Storage {
+
+    public void save(Resume resume) {
+        Object searchKey = getSearchIndexKey(resume.getUuid());
+        if (!isExist(searchKey)) {
+            doSave(resume, searchKey);
+        } else {
+            throw new ExistStorageException(resume.getUuid());
+        }
+    }
+
+    protected abstract void doSave(Resume resume, Object searchKey);
+
+    protected abstract boolean isExist(Object searchKey);
+
     public void delete(String uuid) {
-        int searchKey = getSearchKey(uuid);
+        Object searchKey = getSearchIndexKey(uuid);
         if (isExist(searchKey)) {
-            doDelete();
+            doDelete(searchKey);
         } else {
             throw new NotExistStorageException(uuid);
         }
     }
 
-    protected abstract int getSearchKey(String uuid);
+    protected abstract int getSearchIndexKey(String uuid);
 
-    protected abstract void doDelete();
+    protected abstract void doDelete(Object searchKey);
 
     public void update(Resume resume) {
-        Object searchKey = getSearchKey(resume.getUuid());
+        Object searchKey = getSearchIndexKey(resume.getUuid());
         if (isExist(searchKey)) {
             doUpdate(resume, searchKey);
             System.out.println("Resume " + resume.getUuid() + " updated");
@@ -31,21 +42,12 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    protected abstract boolean isExist(Object searchKey);
-
     protected abstract void doUpdate(Resume resume, Object searchKey);
 
-    public void save(Resume resume) {
-        Object searchKey = getSearchKey(resume.getUuid());
-        if (!isExist(searchKey)) {
-            doSaveElement(resume, searchKey);
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
+    public Resume get(String uuid) {
+        Object searchKey = getSearchIndexKey(uuid);
+        return doGet(searchKey);
     }
 
-    protected abstract void doSaveElement(Resume resume, Object searchKey);
+    protected abstract Resume doGet(Object searchKey);
 }
-
-
-
