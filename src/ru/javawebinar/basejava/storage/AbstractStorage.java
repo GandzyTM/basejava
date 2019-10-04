@@ -46,7 +46,12 @@ public abstract class AbstractStorage implements Storage {
 
     public Resume get(String uuid) {
         Object searchKey = getSearchIndexKey(uuid);
-        return doGet(searchKey);
+        if (isExist(searchKey)) {
+            return doGet(searchKey);
+        } else {
+            throw new NotExistStorageException(uuid);
+        }
+
     }
 
     protected abstract Resume doGet(Object searchKey);
