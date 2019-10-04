@@ -15,8 +15,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {
-                saveElement(resume, (Integer) index);
-                size++;
+            saveElement(resume, (Integer) index);
+            size++;
         }
     }
 
@@ -24,9 +24,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void doDelete(Object index) {
-            size--;
-            deleteElement((Integer) index);
-            storage[size] = null;
+        size--;
+        deleteElement((Integer) index);
+        storage[size] = null;
     }
 
     protected abstract void deleteElement(int index);
