@@ -1,57 +1,39 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     @Override
-    public void save(Resume resume) {
+    protected void doSave(Resume resume, Object index) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage is full", resume.getUuid());
         } else {
-            int index = findIndex(resume.getUuid());
-            if (index < 0) {
-                saveElement(resume, index);
+                saveElement(resume, (Integer) index);
                 size++;
-            } else {
-                throw new ExistStorageException(resume.getUuid());
-            }
         }
     }
 
     protected abstract void saveElement(Resume resume, int index);
 
     @Override
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index > 0) {
+    protected void doDelete(Object index) {
             size--;
-            deleteElement(index);
+            deleteElement((Integer) index);
             storage[size] = null;
-        } else {
-            throw new NotExistStorageException(uuid);
-        }
     }
 
     protected abstract void deleteElement(int index);
 
     @Override
-    public void update(Resume resume) {
-        int index = findIndex(resume.getUuid());
-        if (index != -1) {
-            storage[index] = resume;
-            System.out.println("Resume " + resume.getUuid() + " updated");
-        } else {
-            throw new NotExistStorageException(resume.getUuid());
-        }
+    protected void doUpdate(Resume resume, Object index) {
+        storage[(int) index] = resume;
     }
 
     @Override
@@ -71,14 +53,14 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index != -1) {
-            return storage[index];
-        }
-        throw new NotExistStorageException(uuid);
+    protected Resume doGet(Object index) {
+        return storage[(int) index];
     }
 
-    protected abstract int findIndex(String uuid);
+    protected abstract int getSearchIndexKey(String uuid);
 
+    @Override
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
+    }
 }
