@@ -14,8 +14,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
+    // https://stackoverflow.com/questions/2131802/java-arraylist-how-can-i-check-if-an-index-exists
     protected boolean isExist(Object searchKey) {
-
+        if ((Integer) searchKey < list.size()) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume resume, Object searchKey) {
-        
+
     }
 
     @Override
@@ -53,3 +57,4 @@ public class ListStorage extends AbstractStorage {
         return list.size();
     }
 }
+
