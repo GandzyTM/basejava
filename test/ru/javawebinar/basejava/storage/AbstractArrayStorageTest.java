@@ -57,6 +57,7 @@ public abstract class AbstractArrayStorageTest {
     public void delete() throws Exception {
         storage.delete(UUID_2);
         Assert.assertEquals(2, storage.size());
+        Assert.assertArrayEquals(storage.getAll(), new Resume[]{RESUME_1, RESUME_3});
     }
 
     @Test(expected = NotExistStorageException.class)
