@@ -10,7 +10,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
-        list.add(resume);
+        list.add((Integer) searchKey, resume);
     }
 
     @Override
@@ -21,7 +21,6 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected int getSearchIndexKey(String uuid) {
-        // fori equals
         return list.indexOf(uuid);
     }
 
@@ -46,6 +45,7 @@ public class ListStorage extends AbstractStorage {
             list.get(i);
         }
         return new Resume[0];
+
     }
 
     @Override
