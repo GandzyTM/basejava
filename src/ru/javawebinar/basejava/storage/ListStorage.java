@@ -10,18 +10,24 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
-        list.add((Integer) searchKey, resume);
+        list.add(resume);
     }
 
     @Override
     // https://stackoverflow.com/questions/2131802/java-arraylist-how-can-i-check-if-an-index-exists
     protected boolean isExist(Object searchKey) {
-        return (Integer) searchKey < list.size();
+        return  searchKey != null;
     }
 
     @Override
-    protected int getSearchIndexKey(String uuid) {
-        return list.indexOf(uuid);
+    //https://stackoverflow.com/questions/25676911/how-to-find-an-element-in-an-arraylist-by-using-a-field-value-of-that-element?rq=1
+    protected Integer getSearchIndexKey(String uuid) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -58,3 +64,4 @@ public class ListStorage extends AbstractStorage {
         return list.size();
     }
 }
+
