@@ -19,8 +19,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected String getSearchIndexKey(String searchKey) {
-        return searchKey;
+    protected Integer getSearchIndexKey(String searchKey) {
+        return Integer.valueOf(searchKey);
     }
 
     @Override
