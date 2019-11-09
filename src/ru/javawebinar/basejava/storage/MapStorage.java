@@ -10,7 +10,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
-        map.putIfAbsent(searchKey, resume);
+        map.put(searchKey, resume);
     }
 
     @Override
@@ -19,8 +19,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Integer getSearchIndexKey(String searchKey) {
-        return Integer.valueOf(searchKey);
+    protected String getSearchIndexKey(String searchKey) {
+        return searchKey;
     }
 
     @Override
