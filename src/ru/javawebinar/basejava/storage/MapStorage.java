@@ -38,13 +38,9 @@ public class MapStorage extends AbstractStorage {
         return map.get(searchKey);
     }
 
-    @Override //???
+    @Override
     public Resume[] getAll() {
-        Resume[] arr = new Resume[map.size()];
-        for (int i = 0; i < arr.length; i++) {
-            return map.values().toArray((new Resume[i]));
-        }
-        return arr;
+        return map.values().toArray(new Resume[0]);
     }
 
     @Override
