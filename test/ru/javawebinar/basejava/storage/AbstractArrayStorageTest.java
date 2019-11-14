@@ -80,7 +80,8 @@ public abstract class AbstractArrayStorageTest {
     public void getAll() throws Exception {
         Resume[] checkArray = storage.getAll();
         Assert.assertEquals(3, checkArray.length);
-        Assert.assertArrayEquals(storage.getAll(), checkArray);
+        Assert.assertArrayEquals(storage.getAll(), new Resume[]{RESUME_2, RESUME_1, RESUME_3});
+
     }
 
     @Test
