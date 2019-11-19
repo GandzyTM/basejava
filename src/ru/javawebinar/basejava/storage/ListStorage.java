@@ -21,7 +21,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     //https://stackoverflow.com/questions/25676911/how-to-find-an-element-in-an-arraylist-by-using-a-field-value-of-that-element?rq=1
-    protected Integer getSearchIndexKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -46,10 +46,9 @@ public class ListStorage extends AbstractStorage {
         return list.get((Integer) searchKey);
     }
 
-       @Override
-    public Resume[] getAll() {
-       Resume[] arr = new Resume[list.size()];
-        return list.toArray(arr);
+    @Override
+    protected List<Resume> getAllElements() {
+        return new ArrayList<>(list);
     }
 
     @Override
@@ -62,4 +61,5 @@ public class ListStorage extends AbstractStorage {
         return list.size();
     }
 }
+
 
