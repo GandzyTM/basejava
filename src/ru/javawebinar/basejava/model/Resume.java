@@ -38,9 +38,15 @@ public class Resume implements Comparable<Resume> {
     public String toString() {
         return uuid;
     }
-
+    
     @Override
     public int compareTo(Resume o) {
-        return this.uuid.compareTo(o.uuid);
+//https://stackoverflow.com/questions/369512/how-to-compare-objects-by-multiple-fields
+        int siezCmp = fullName.compareTo(o.fullName);
+        if (siezCmp != 0) {
+            return siezCmp;
+        } else {
+            return this.uuid.compareTo(o.uuid);
+        }
     }
 }
