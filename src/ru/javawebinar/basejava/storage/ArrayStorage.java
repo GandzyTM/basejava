@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-public class ArrayStorage extends AbstractArrayStorage {
+public abstract class ArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void saveElement(Resume resume, int index) {
@@ -15,7 +15,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected Integer getSearchKey(String uuid) {
+    protected Integer getSearchIndexKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

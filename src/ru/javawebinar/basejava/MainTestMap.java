@@ -40,7 +40,7 @@ public class MainTestMap {
 
     private static void printAll() {
         System.out.println("\nGet All");
-        for (Resume r : mapStorage.getAll()) {
+        for (Resume r : mapStorage.getAllSorted()) {
             System.out.println(r);
         }
     }

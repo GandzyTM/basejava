@@ -55,4 +55,3 @@ public class MapStorage extends AbstractStorage {
         return map.size();
     }
 }
-

@@ -19,6 +19,10 @@ public class Resume implements Comparable<Resume> {
         this.uuid = uuid;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,7 +42,7 @@ public class Resume implements Comparable<Resume> {
     public String toString() {
         return uuid;
     }
-    
+
     @Override
     public int compareTo(Resume o) {
 //https://stackoverflow.com/questions/369512/how-to-compare-objects-by-multiple-fields
