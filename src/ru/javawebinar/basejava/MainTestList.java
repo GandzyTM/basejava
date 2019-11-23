@@ -8,15 +8,15 @@ public class MainTestList {
     private static final Storage listStorage = new ListStorage();
 
     public static void main(String[] args) {
-        Resume r1 = new Resume();
+        Resume r1 = new Resume("uuid1");
         r1.setUuid("uuid1");
-        Resume r2 = new Resume();
+        Resume r2 = new Resume("uuid2");
         r2.setUuid("uuid2");
-        Resume r3 = new Resume();
+        Resume r3 = new Resume("uuid3");
         r3.setUuid("uuid3");
-        Resume r4 = new Resume();
+        Resume r4 = new Resume("uuid4");
         r4.setUuid("uuid4");
-        Resume r5 = new Resume();
+        Resume r5 = new Resume("uuid5");
         r5.setUuid("uuid5");
 
         listStorage.save(r1);

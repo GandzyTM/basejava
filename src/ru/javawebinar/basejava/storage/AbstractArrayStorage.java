@@ -65,5 +65,4 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected abstract Integer getSearchKey(String uuid);
 
-    protected abstract Integer getSearchIndexKey(String uuid);
 }
