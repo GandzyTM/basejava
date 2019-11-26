@@ -18,21 +18,37 @@ public class MainTestList {
         r4.setUuid("uuid4");
         Resume r5 = new Resume("uuid5");
         r5.setUuid("uuid5");
+        Resume r6 = new Resume("uuid6");
+        r6.setUuid("uuid6");
+        Resume r7 = new Resume("uuid7");
+        r7.setUuid("uuid7");
+        Resume r8 = new Resume("uuid8");
+        r8.setUuid("uuid8");
+        Resume r9 = new Resume("uuid9");
+        r9.setUuid("uuid9");
+        Resume r10 = new Resume("uuid10");
+        r10.setUuid("uuid10");
 
         listStorage.save(r1);
         listStorage.save(r2);
         listStorage.save(r3);
         listStorage.save(r4);
         listStorage.save(r5);
+        listStorage.save(r6);
+        listStorage.save(r7);
+        listStorage.save(r8);
+        listStorage.save(r9);
+        listStorage.save(r10);
 
         System.out.println("Get r3: " + listStorage.get(r3.getUuid()));
         System.out.println("Size: " + listStorage.size());
 
-        System.out.println("Get dummy: " + listStorage.get("dummy"));
+//        System.out.println("Get dummy: " + listStorage.get("dummy"));
         printAll();
         listStorage.delete(r3.getUuid());
         printAll();
-        listStorage.update(r5);
+        listStorage.update(r6);
+        System.out.println(r6 + " updated");
         printAll();
         listStorage.clear();
         printAll();
