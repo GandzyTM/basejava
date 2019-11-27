@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-    private Map<Object, Resume> map = new HashMap<>();
+    private Map<String, Resume> map = new HashMap<>();
 
     @Override
     protected void doSave(Resume resume, Object searchKey) {
-        map.put(searchKey, resume);
+        map.put((String) searchKey, resume);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume resume, Object searchKey) {
-        map.replace(searchKey, resume);
+        map.replace((String) searchKey, resume);
     }
 
     @Override
