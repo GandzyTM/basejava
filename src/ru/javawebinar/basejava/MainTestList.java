@@ -1,12 +1,10 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.ListStorage;
-import ru.javawebinar.basejava.storage.SortedArrayStorage;
-import ru.javawebinar.basejava.storage.Storage;
+import ru.javawebinar.basejava.storage.*;
 
 public class MainTestList {
-    private static final Storage listStorage = new SortedArrayStorage();
+    private static final Storage listStorage = new MapStorageResume();
 
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1");
@@ -29,6 +27,7 @@ public class MainTestList {
         r9.setUuid("uuid9");
         Resume r10 = new Resume("uuid10");
         r10.setUuid("uuid10");
+        Resume r11 = new Resume("new resume");
 
         listStorage.save(r1);
         listStorage.save(r2);
@@ -40,8 +39,11 @@ public class MainTestList {
         listStorage.save(r8);
         listStorage.save(r9);
         listStorage.save(r10);
+        listStorage.save(r11);
 
         System.out.println("Get r3: " + listStorage.get(r3.getUuid()));
+        System.out.println("Get r11: " + r11.getUuid());
+        System.out.println("Get r11: " + listStorage.get(r11.getUuid()));
         System.out.println("Size: " + listStorage.size());
 
 //        System.out.println("Get dummy: " + listStorage.get("dummy"));
