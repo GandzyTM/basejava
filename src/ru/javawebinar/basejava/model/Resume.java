@@ -1,5 +1,7 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
@@ -11,6 +13,8 @@ public class Resume implements Comparable<Resume> {
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid can't be null");
+        Objects.requireNonNull(fullName, "fullname can't be null");
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -23,6 +27,10 @@ public class Resume implements Comparable<Resume> {
         return uuid;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -30,27 +38,28 @@ public class Resume implements Comparable<Resume> {
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.uuid);
+        if (!uuid.equals(resume.uuid)) return false;
+        return fullName.equals(resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+//  https://stackoverflow.com/questions/16824721/generating-hashcode-from-multiple-fields
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return uuid;
+        return uuid + fullName;
     }
 
     @Override
     public int compareTo(Resume o) {
 //https://stackoverflow.com/questions/369512/how-to-compare-objects-by-multiple-fields
-        int siezCmp = fullName.compareTo(o.fullName);
-        if (siezCmp != 0) {
-            return siezCmp;
-        } else {
-            return this.uuid.compareTo(o.uuid);
-        }
+        return Comparator.comparing(Resume::getUuid)
+                .thenComparing(Resume::getFullName)
+                .compare(this, o);
     }
 }
