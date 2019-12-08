@@ -27,7 +27,9 @@ public class MainTestList {
         r9.setUuid("uuid9");
         Resume r10 = new Resume("uuid10");
         r10.setUuid("uuid10");
-        Resume r11 = new Resume("new resume");
+        Resume r11 = new Resume("uuid10");
+        r11.setUuid("uuid11");
+        Resume r12 = new Resume("new resume");
 
         listStorage.save(r1);
         listStorage.save(r2);
@@ -40,6 +42,7 @@ public class MainTestList {
         listStorage.save(r9);
         listStorage.save(r10);
         listStorage.save(r11);
+        listStorage.save(r12);
 
         System.out.println("Get r3: " + listStorage.get(r3.getUuid()));
         System.out.println("Get r11: " + r11.getUuid());

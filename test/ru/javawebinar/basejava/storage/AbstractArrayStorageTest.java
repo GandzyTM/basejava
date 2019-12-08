@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava.storage;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -16,7 +15,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     public void saveOverflow() throws Exception {
         storage.clear();
         try {
-            for (int i = 0; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
+            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume("Resume" + i));
             }
         } catch (StorageException e) {

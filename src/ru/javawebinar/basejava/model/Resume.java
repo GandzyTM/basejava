@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Resume implements Comparable<Resume> {
+public class Resume {
     private String uuid;
     private String fullName;
 
@@ -52,14 +52,6 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public String toString() {
-        return uuid + fullName;
-    }
-
-    @Override
-    public int compareTo(Resume o) {
-//https://stackoverflow.com/questions/369512/how-to-compare-objects-by-multiple-fields
-        return Comparator.comparing(Resume::getUuid)
-                .thenComparing(Resume::getFullName)
-                .compare(this, o);
+        return uuid + " name: " + fullName;
     }
 }
