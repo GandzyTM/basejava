@@ -5,17 +5,17 @@ import ru.javawebinar.basejava.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
     private List<Resume> list = new ArrayList<>();
 
     @Override
-    protected void doSave(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, Integer searchKey) {
         list.add(resume);
     }
 
     @Override
     // https://stackoverflow.com/questions/2131802/java-arraylist-how-can-i-check-if-an-index-exists
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(Integer searchKey) {
         return  searchKey != null;
     }
 
@@ -31,18 +31,18 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        int idx = (int) searchKey;
+    protected void doDelete(Integer searchKey) {
+        int idx = searchKey;
         list.remove(idx);
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
-        list.set((Integer) searchKey, resume);
+    protected void doUpdate(Resume resume, Integer searchKey) {
+        list.set(searchKey, resume);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
+    protected Resume doGet(Integer searchKey) {
         return list.get((Integer) searchKey);
     }
 
