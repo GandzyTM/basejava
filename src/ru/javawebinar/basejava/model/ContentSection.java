@@ -1,10 +1,12 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
+
 public class ContentSection extends Section {
     private final String content;
 
-
     public ContentSection(String content) {
+        Objects.requireNonNull(content, "content couldn't be null");
         this.content = content;
     }
 
@@ -17,19 +19,19 @@ public class ContentSection extends Section {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ContentSection content1 = (ContentSection) o;
+        ContentSection contentSection = (ContentSection) o;
 
-        return content.equals(content1.content);
+        return content.equals(contentSection.content);
     }
 
     @Override
     public int hashCode() {
-        return content.hashCode();
+        return Objects.hash(content);
     }
 
     @Override
     public String toString() {
-        return "Content{" +
+        return "ContentSection{" +
                 "content='" + content + '\'' +
                 '}';
     }

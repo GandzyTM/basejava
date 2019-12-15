@@ -10,8 +10,11 @@ public class Organization {
     private final String title;
     private final String description;
 
-    public Organization(Link homePage, LocalDate startDate, LocalDate endDate, String title, String description) {
-        this.homePage = homePage;
+    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
+        Objects.requireNonNull(startDate, "start date couldn't be null");
+        Objects.requireNonNull(endDate, "end date couldn't be null");
+        Objects.requireNonNull(title, "title of job couldn't be null");
+        this.homePage = new Link(name, url);
         this.startDate = startDate;
         this.endDate = endDate;
         this.title = title;
@@ -34,12 +37,7 @@ public class Organization {
 
     @Override
     public int hashCode() {
-        int result = homePage != null ? homePage.hashCode() : 0;
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
+        return Objects.hash(homePage, startDate, endDate, title, description);
     }
 
     @Override

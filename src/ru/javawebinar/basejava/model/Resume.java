@@ -9,12 +9,12 @@ public class Resume {
     private String uuid;
     private String fullName;
 
+    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
     }
-
-    private final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
-    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "uuid can't be null");
@@ -35,12 +35,12 @@ public class Resume {
         return fullName;
     }
 
-    public Section getSectionTypeStringMap(SectionType type) {
-        return section.get(type);
+    public Map<SectionType, Section> getSections() {
+        return sections;
     }
 
-    public String getContactTypeStringMap(ContactType type) {
-        return contacts.get(type);
+    public Map<ContactType, String> getContacts() {
+        return contacts;
     }
 
     @Override

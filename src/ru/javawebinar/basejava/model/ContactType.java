@@ -7,12 +7,11 @@ public enum ContactType {
     LINKEDIN("LinkedIn profile"),
     GITHUB("GitHub profile"),
     STACKOVERFLOW("Stackoverflow profile"),
-    HOMEPAGE("Home page")
-    ;
+    HOMEPAGE("Home page");
 
     private final String title;
-    ContactType(String title) {
 
+    ContactType(String title) {
         this.title = title;
     }
 

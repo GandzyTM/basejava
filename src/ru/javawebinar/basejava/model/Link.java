@@ -1,11 +1,13 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
+
 public class Link {
     private final String name;
     private final String url;
 
-
     public Link(String name, String url) {
+        Objects.requireNonNull(name, "name of url couldn't be null");
         this.name = name;
         this.url = url;
     }
@@ -31,9 +33,7 @@ public class Link {
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + url.hashCode();
-        return result;
+        return Objects.hash(name, url);
     }
 
     @Override
