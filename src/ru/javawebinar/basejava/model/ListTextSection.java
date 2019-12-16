@@ -27,7 +27,7 @@ public class ListTextSection extends Section {
 
     @Override
     public int hashCode() {
-        return list != null ? list.hashCode() : 0;
+        return Objects.hash(list);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class Link {
         Link link = (Link) o;
 
         if (!name.equals(link.name)) return false;
-        return url.equals(link.url);
+        return Objects.equals(url, link.url);
     }
 
     @Override
