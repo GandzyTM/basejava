@@ -8,11 +8,11 @@ import java.util.Objects;
 
 public class Organization {
     private final Link homePage;
-    private List<organizationVars> organizationVars = new ArrayList<>();
+    private List<Position> Position = new ArrayList<>();
 
     public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
         this.homePage = new Link(name, url);
-        this.organizationVars = Collections.singletonList(new organizationVars(startDate, endDate, title, description));
+        this.Position = Collections.singletonList(new Position(startDate, endDate, title, description));
     }
 
     @Override
@@ -21,19 +21,19 @@ public class Organization {
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
         return homePage.equals(that.homePage) &&
-                organizationVars.equals(that.organizationVars);
+                Position.equals(that.Position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(homePage, organizationVars);
+        return Objects.hash(homePage, Position);
     }
 
     @Override
     public String toString() {
         return "Organization{" +
                 "homePage=" + homePage +
-                ", organizationParameters=" + organizationVars +
+                ", organizationParameters=" + Position +
                 '}';
     }
 }
