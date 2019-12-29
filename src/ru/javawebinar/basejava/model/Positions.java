@@ -6,17 +6,17 @@ import java.util.Objects;
 
 import static ru.javawebinar.basejava.util.DateUtil.of;
 
-public class Position {
+public class Positions {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String title;
     private final String description;
 
-    public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+    public Positions(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
         this(of(startYear, startMonth), of(endYear, endMonth), title, description);
     }
 
-    public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
+    public Positions(LocalDate startDate, LocalDate endDate, String title, String description) {
         Objects.requireNonNull(startDate, "start date couldn't be null");
         Objects.requireNonNull(endDate, "end date couldn't be null");
         Objects.requireNonNull(title, "title of job couldn't be null");
@@ -46,7 +46,7 @@ public class Position {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Position that = (Position) o;
+        Positions that = (Positions) o;
         return startDate.equals(that.startDate) &&
                 endDate.equals(that.endDate) &&
                 title.equals(that.title) &&

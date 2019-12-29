@@ -13,13 +13,8 @@ public class MainFindFiles {
         for (File p : files) {
             if (!p.isDirectory()) {
                 System.out.println(p.getName());
-            }
-            if (p.isDirectory()) {
-                try {
-                    showFilesDirectories(p);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            }else {
+                showFilesDirectories(p);
             }
         }
     }
