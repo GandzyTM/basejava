@@ -76,35 +76,39 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> getAllElements() {
         File[] files = directory.listFiles();
         List<Resume> list = new ArrayList<>(files.length);
-        if (files != null) {
+        if (files == null) {
+            throw new StorageException("No files in directory", null);
+        } else {
             for (File f : files) {
                 list.add(doGet(f));
             }
-        } else {
-            throw new StorageException("No files in directory", null);
+            return list;
         }
-        return list;
     }
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File f : files) {
+        if (noFiles()) {
+            for (File f : directory.listFiles()) {
                 doDelete(f);
             }
-        } else {
-            throw new StorageException("No files in directory", null);
         }
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list != null) {
-            return list.length;
-        } else {
+        if (noFiles()) {
+            return directory.listFiles().length;
+        }
+        return 0;
+    }
+
+    private boolean noFiles() {
+        File[] files = directory.listFiles();
+        if (files == null) {
             throw new StorageException("No files in directory", null);
+        } else {
+            return true;
         }
     }
 }
