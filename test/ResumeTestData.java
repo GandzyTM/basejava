@@ -14,7 +14,10 @@ public class ResumeTestData {
         Map<SectionType, Section> sections = resume.getSections();
 //        Link link = new Link("Домашняя страница", "http://gkislin.ru/");
         Organization organization = new Organization("Java Online Projects", "http://javaops.ru/",
-                LocalDate.of(2013, 3, 1), LocalDate.now(), "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.\n");
+                LocalDate.of(2013, 3, 1), LocalDate.now(),
+                new Position(LocalDate.of(2005, 3, 1), LocalDate.of(2006, 4, 1), "title", "description"),
+                "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.\n");
+
         contacts.put(ContactType.PHONE, "+7(921) 855-0482");
         contacts.put(ContactType.SKYPE, "grigory.kislin");
         contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
@@ -44,19 +47,19 @@ public class ResumeTestData {
         qualifications.add("Java Frameworks: Java 8 (Time API, Streams), Guava, Java Executor, MyBatis, Spring (MVC, Security, Data, Clouds, Boot), JPA (Hibernate, EclipseLink), Guice, GWT(SmartGWT, ExtGWT/GXT), Vaadin, Jasperreports, Apache Commons, Eclipse SWT, JUnit, Selenium (htmlelements).\n");
         sections.put(SectionType.QUALIFICATIONS, new ListTextSection(qualifications));
 
-        List<Organization> experience = new ArrayList<>();
-        experience.add(new Organization("Java Online Projects",
-                "http://javaops.ru/",
-                LocalDate.of(2013, 3, 1),
-                LocalDate.now(),
-                "Автор проекта",
-                "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
-        experience.add(new Organization("Wrike", "https://www.wrike.com/",
-                LocalDate.of(2014, 10, 1),
-                LocalDate.of(2016, 1, 1),
-                "Старший разработчик (backend)\n",
-                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.\n"));
-        sections.put(SectionType.EXPERIENCE, new OrganizationSection(experience));
+//        List<Organization> experience = new ArrayList<>();
+//        experience.add(new Organization("Java Online Projects",
+//                "http://javaops.ru/",
+//                LocalDate.of(2013, 3, 1),
+//                LocalDate.now(),
+//                "Автор проекта",
+//                "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
+//        experience.add(new Organization("Wrike", "https://www.wrike.com/",
+//                LocalDate.of(2014, 10, 1),
+//                LocalDate.of(2016, 1, 1),
+//                "Старший разработчик (backend)\n",
+//                "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.\n"));
+//        sections.put(SectionType.EXPERIENCE, new OrganizationSection(experience));
 
 //        StringBuilder text = new StringBuilder();
 //        text.append(SectionType.ACHIEVEMENT.getTitle())
