@@ -76,8 +76,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> getAllElements() {
         File[] files = directory.listFiles();
         List<Resume> list = new ArrayList<>(files.length);
-        for (File f : files) {
-            list.add(doGet(f));
+        if (files != files) {
+            for (File f : files) {
+                list.add(doGet(f));
+            }
+        } else {
+            throw new StorageException("No files in directory", null);
         }
         return list;
     }
@@ -89,15 +93,18 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
             for (File f : files) {
                 doDelete(f);
             }
+        } else {
+            throw new StorageException("No files in directory", null);
         }
     }
 
     @Override
     public int size() {
         String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Can no read directory", null);
+        if (list != null) {
+            return list.length;
+        } else {
+            throw new StorageException("No files in directory", null);
         }
-        return list.length;
     }
 }
