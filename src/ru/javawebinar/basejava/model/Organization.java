@@ -1,21 +1,23 @@
 package ru.javawebinar.basejava.model;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class Organization {
     private final Link homePage;
-    private List<Position> positions = new ArrayList<>();
+    private List<Position> positions;
 
     public Organization(String name,
                         String url,
-                        LocalDate startDate,
-                        LocalDate endDate,
-                        Position positions,
-                        String title,
-                        String description) {
-        this.homePage = new Link(name, url);
-        this.positions = Collections.singletonList(new Position(startDate, endDate, title, description));
+                        Position... positions) {
+        this(new Link(name, url), Arrays.asList(positions));
+    }
+
+    public Organization(Link homePage,
+                        List<Position> positions) {
+        this.homePage = homePage;
+        this.positions = positions;
     }
 
     @Override
