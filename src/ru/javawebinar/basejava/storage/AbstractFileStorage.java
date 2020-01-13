@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.model.Resume;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -74,41 +75,34 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getAllElements() {
-        File[] files = directory.listFiles();
-        List<Resume> list = new ArrayList<>(files.length);
-        if (files == null) {
-            throw new StorageException("No files in directory", null);
-        } else {
-            for (File f : files) {
-                list.add(doGet(f));
-            }
-            return list;
+        List<File> files = checkFileExist();
+        List<Resume> list = new ArrayList<>(files.size());
+        for (File f : files) {
+            list.add(doGet(f));
         }
+        return list;
     }
 
     @Override
     public void clear() {
-        if (noFiles()) {
-            for (File f : directory.listFiles()) {
-                doDelete(f);
-            }
+        for (File f : checkFileExist()) {
+            doDelete(f);
         }
     }
 
     @Override
     public int size() {
-        if (noFiles()) {
-            return directory.listFiles().length;
-        }
-        return 0;
+        return checkFileExist().size();
     }
 
-    private boolean noFiles() {
+    protected List<File> checkFileExist() {
         File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException("No files in directory", null);
+        List<File> list = new ArrayList<>(files.length);
+        if (files != null) {
+            Collections.addAll(list, files);
         } else {
-            return true;
+            throw new StorageException("No files in directory", null);
         }
+        return list;
     }
 }

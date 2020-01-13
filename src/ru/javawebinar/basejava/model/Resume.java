@@ -35,12 +35,20 @@ public class Resume {
         return fullName;
     }
 
-    public Map<SectionType, Section> getSections() {
-        return sections;
+    public String getContact(ContactType type) {
+        return contacts.get(type);
     }
 
-    public Map<ContactType, String> getContacts() {
-        return contacts;
+    public Section getSection(SectionType type) {
+        return sections.get(type);
+    }
+
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public void addSection(SectionType type, Section section) {
+        sections.put(type, section);
     }
 
     @Override
