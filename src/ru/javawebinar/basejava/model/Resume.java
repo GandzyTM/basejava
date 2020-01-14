@@ -59,15 +59,15 @@ public class Resume {
         Resume resume = (Resume) o;
 
         if (!uuid.equals(resume.uuid)) return false;
-        return fullName.equals(resume.fullName);
+        return Objects.equals(uuid, resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(sections, resume.sections);
     }
 
     @Override
     public int hashCode() {
-//  https://stackoverflow.com/questions/16824721/generating-hashcode-from-multiple-fields
-        int result = uuid.hashCode();
-        result = 31 * result + fullName.hashCode();
-        return result;
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
 
     @Override
