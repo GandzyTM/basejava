@@ -1,18 +1,23 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ListTextSection extends Section {
-    private final List<String> list;
+    private final List<String> items;
 
-    public ListTextSection(List<String> list) {
-        Objects.requireNonNull(list, "text section couldn't be null");
-        this.list = list;
+    public ListTextSection(String... items) {
+        this(Arrays.asList(items));
     }
 
-    public List<String> getList() {
-        return list;
+    public ListTextSection(List<String> items) {
+        Objects.requireNonNull(items, "text section couldn't be null");
+        this.items = items;
+    }
+
+    public List<String> getItems() {
+        return items;
     }
 
     @Override
@@ -22,18 +27,19 @@ public class ListTextSection extends Section {
 
         ListTextSection listText = (ListTextSection) o;
 
-        return Objects.equals(list, listText.list);
+        return Objects.equals(items, listText.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(list);
+        return Objects.hash(items);
     }
 
     @Override
     public String toString() {
         return "ListText{" +
-                "list=" + list +
+                "list=" + items +
                 '}';
     }
 }
+
