@@ -36,10 +36,6 @@ public class Organization {
 
     @Override
     public String toString() {
-        return "Organization{" +
-                "homePage=" + homePage +
-                ", organizationParameters=" + positions +
-                '}';
+        return "Organization{" + homePage + positions + '}';
     }
 }
-
