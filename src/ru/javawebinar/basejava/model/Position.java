@@ -1,12 +1,14 @@
 package ru.javawebinar.basejava.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Objects;
 
 import static ru.javawebinar.basejava.util.DateUtil.of;
 
-public class Position {
+public class Position implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final String title;
