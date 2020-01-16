@@ -23,7 +23,12 @@ public class MainFindFilesNIO {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
                     throws IOException {
-                System.out.println("visitFile: " + file.getFileName());
+                int count = file.getNameCount() - parent.getNameCount() + 1;
+                count += file.getFileName().toString().length();
+
+                String text = String.format("%" + count + "s", file.getFileName());
+                text = text.replaceAll("[\\s]", " ");
+                System.out.println(text);
                 return FileVisitResult.CONTINUE;
             }
         });
