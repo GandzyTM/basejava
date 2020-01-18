@@ -98,7 +98,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         if (files != null) {
             return files;
         } else {
-            throw new StorageException("No files in directory", null);
+            throw new StorageException("No files in directory");
         }
     }
 }

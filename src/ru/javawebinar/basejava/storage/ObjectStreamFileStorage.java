@@ -1,14 +1,13 @@
 package ru.javawebinar.basejava.storage;
 
-import jdk.management.resource.ResourceRequestDeniedException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
+public class ObjectStreamFileStorage extends AbstractFileStorage {
 
-    protected ObjectStreamStorage(File directory) {
+    protected ObjectStreamFileStorage(File directory) {
         super(directory);
     }
 
