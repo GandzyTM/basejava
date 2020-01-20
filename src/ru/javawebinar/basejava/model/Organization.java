@@ -7,8 +7,11 @@ import java.util.Objects;
 
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final Link homePage;
+    private Link homePage;
     private List<Position> positions;
+
+    public Organization() {
+    }
 
     public Organization(String name,
                         String url,
