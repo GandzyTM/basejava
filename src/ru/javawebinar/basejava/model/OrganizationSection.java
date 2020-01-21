@@ -36,14 +36,12 @@ public class OrganizationSection extends Section {
 
     @Override
     public int hashCode() {
-        return Objects.hash(organizationList);
+        return organizationList.hashCode();
     }
 
     @Override
     public String toString() {
-        return "OrganizationSection{" +
-                "organizationList=" + organizationList +
-                '}';
+        return organizationList.toString();
     }
 }
 

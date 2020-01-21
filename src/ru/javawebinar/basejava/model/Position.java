@@ -77,11 +77,6 @@ public class Position implements Serializable {
 
     @Override
     public String toString() {
-        return "organizationParameters{" +
-                "startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "Position(" + startDate + ',' + endDate + ',' + title + ',' + description + ')';
     }
 }

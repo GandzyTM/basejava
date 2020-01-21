@@ -41,6 +41,6 @@ public class Organization implements Serializable {
 
     @Override
     public String toString() {
-        return "Organization{" + homePage + positions + '}';
+        return "Organization(" + homePage + "," + positions + ')';
     }
 }
