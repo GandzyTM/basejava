@@ -6,4 +6,5 @@ lesson
 README.md
 src/ru/javawebinar/basejava/MainTestArrayStorage.java
 src/ru/javawebinar/basejava/MainTestSortedArrayStorage.java
+/lib/
 /storage/
