@@ -19,6 +19,9 @@ public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
     private Serializer serializer;
 
+    public PathStorage() {
+    }
+
     protected PathStorage(String dir, Serializer serializer) {
         this.serializer = serializer;
         directory = Paths.get(dir);
@@ -68,6 +71,7 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Couldn't create path ", path.getFileName().toString(), e);
         }
+        doUpdate(resume, path);
     }
 
     @Override

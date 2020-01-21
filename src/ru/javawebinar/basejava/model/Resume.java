@@ -82,6 +82,6 @@ public class Resume implements Serializable {
 
     @Override
     public String toString() {
-        return uuid + " name: " + fullName;
+        return uuid + '(' + fullName + ')';
     }
 }

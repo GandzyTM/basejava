@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("/home/gandzy/Documents/GitHub/basejava/storage");
+    protected static final File STORAGE_DIR = new File("C:\\Users\\pashkov-kv\\Documents\\GitHub\\basejava\\storage");
     protected Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final Resume R1 = new Resume(UUID_1, "resume uuid1");
@@ -101,7 +101,8 @@ public abstract class AbstractStorageTest {
                                 "second", "second desc")
                 )
         );
-
+        R2.addContact(ContactType.SKYPE, "skype2");
+        R2.addContact(ContactType.PHONE, "22222");
         R1.addSection(SectionType.EDUCATION, new OrganizationSection(education));
     }
 
