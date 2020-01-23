@@ -1,8 +1,11 @@
 package ru.javawebinar.basejava.storage.serialize;
 
+import javafx.geometry.Pos;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerializer implements Serializer {
@@ -24,9 +27,34 @@ public class DataStreamSerializer implements Serializer {
                 SectionType sectionType = entry.getKey();
                 Section section = entry.getValue();
                 dataOutputStream.writeUTF(sectionType.name());
-                dataOutputStream.writeUTF(String.valueOf(((ContentSection) section).getContent()));
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                    case ACHIEVEMENT:
+                        dataOutputStream.writeUTF(((ContentSection) section).getContent());
+                        break;
+                    case QUALIFICATIONS:
+                        List<String> achievement = new ArrayList<>();
+                        for (String item : ((ListTextSection) achievement).getItems()) {
+                            dataOutputStream.writeUTF(item);
+                        }
+                        break;
+                    case EXPERIENCE:
+                        List<Organization> experience = new ArrayList<>();
+                        for (Organization item : ((OrganizationSection) experience).getOrganizationList()) {
+                            dataOutputStream.writeUTF(item.toString());
 
+                            List<Position> positions = new ArrayList<>();
+                            for (Position p : positions) {
+
+                                dataOutputStream.writeUTF(p.getTitle());
+                                dataOutputStream.writeUTF(p.getDescription());
+                            }
+                        }
+                }
             }
+
+
         }
     }
 
