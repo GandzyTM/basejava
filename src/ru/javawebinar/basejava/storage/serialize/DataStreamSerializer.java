@@ -30,31 +30,32 @@ public class DataStreamSerializer implements Serializer {
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
-                    case ACHIEVEMENT:
                         dataOutputStream.writeUTF(((ContentSection) section).getContent());
                         break;
+                    case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        List<String> achievement = new ArrayList<>();
-                        for (String item : ((ListTextSection) achievement).getItems()) {
+                        List<String> achieveList = new ArrayList<>();
+                        for (String item : ((ListTextSection) achieveList).getItems()) {
                             dataOutputStream.writeUTF(item);
                         }
                         break;
                     case EXPERIENCE:
-                        List<Organization> experience = new ArrayList<>();
-                        for (Organization item : ((OrganizationSection) experience).getOrganizationList()) {
-                            dataOutputStream.writeUTF(item.toString());
+                    case EDUCATION:
+                        List<Organization> organizationList = new ArrayList<>();
+                        for (Organization item : ((OrganizationSection) organizationList).getOrganizationList()) {
+                            dataOutputStream.writeUTF(item.getHomePage().getName());
+                            dataOutputStream.writeUTF(item.getHomePage().getUrl());
 
                             List<Position> positions = new ArrayList<>();
                             for (Position p : positions) {
-
+                                dataOutputStream.writeUTF(p.getStartDate()); //LocalDate
+                                dataOutputStream.writeUTF(p.getEndDate());   //LocalDate
                                 dataOutputStream.writeUTF(p.getTitle());
                                 dataOutputStream.writeUTF(p.getDescription());
                             }
                         }
                 }
             }
-
-
         }
     }
 
