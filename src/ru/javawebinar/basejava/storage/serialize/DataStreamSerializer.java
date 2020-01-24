@@ -45,8 +45,12 @@ public class DataStreamSerializer implements Serializer {
                             dataOutputStream.writeUTF(item.getHomePage().getUrl());
                             List<Position> positions = new ArrayList<>();
                             for (Position p : positions) {
-                                dataOutputStream.writeUTF(String.valueOf(p.getStartDate())); //LocalDate
-                                dataOutputStream.writeUTF(String.valueOf(p.getEndDate()));   //LocalDate
+                                dataOutputStream.writeInt(p.getStartDate().getYear()); //LocalDate
+                                dataOutputStream.writeInt(p.getStartDate().getMonth().getValue());
+                                dataOutputStream.writeInt(p.getStartDate().getDayOfMonth());
+                                dataOutputStream.writeInt(p.getEndDate().getYear()); //LocalDate
+                                dataOutputStream.writeInt(p.getEndDate().getMonth().getValue());
+                                dataOutputStream.writeInt(p.getEndDate().getDayOfMonth());
                                 dataOutputStream.writeUTF(p.getTitle());
                                 dataOutputStream.writeUTF(p.getDescription());
                             }
