@@ -101,9 +101,10 @@ public abstract class AbstractStorageTest {
                                 "second", "second desc")
                 )
         );
+        R1.addSection(SectionType.EDUCATION, new OrganizationSection(education));
+
         R2.addContact(ContactType.SKYPE, "skype2");
         R2.addContact(ContactType.PHONE, "22222");
-        R1.addSection(SectionType.EDUCATION, new OrganizationSection(education));
     }
 
     protected AbstractStorageTest(Storage storage) {
