@@ -23,8 +23,7 @@ public class DataStreamSerializer implements Serializer {
             Map<SectionType, Section> sections = resume.getSections();
             dataOutputStream.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                dataOutputStream.writeUTF(entry.getKey().getTitle());
-                dataOutputStream.writeUTF(String.valueOf(entry.getValue()));
+                dataOutputStream.writeUTF(entry.getKey().name());
                 SectionType sectionType = entry.getKey();
                 Section section = entry.getValue();
                 switch (sectionType) {
@@ -34,16 +33,18 @@ public class DataStreamSerializer implements Serializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
+                        dataOutputStream.writeInt(((ListTextSection) section).getItems().size());
                         for (String item : ((ListTextSection) section).getItems()) {
                             dataOutputStream.writeUTF(item);
-                            dataOutputStream.writeInt(item.length());
                         }
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
+                        dataOutputStream.writeInt(((OrganizationSection) section).getOrganizationList().size());
                         for (Organization item : ((OrganizationSection) section).getOrganizationList()) {
                             dataOutputStream.writeUTF(item.getHomePage().getName());
                             dataOutputStream.writeUTF(item.getHomePage().getUrl());
+
                             for (Position position : item.getPositions()) {
                                 dataOutputStream.writeInt(position.getStartDate().getYear());
                                 dataOutputStream.writeInt(position.getStartDate().getMonth().getValue());
@@ -54,7 +55,6 @@ public class DataStreamSerializer implements Serializer {
                                 dataOutputStream.writeUTF(position.getTitle());
                                 dataOutputStream.writeUTF(position.getDescription());
                             }
-
                         }
                 }
             }
@@ -74,23 +74,34 @@ public class DataStreamSerializer implements Serializer {
 
             // TODO sections
             int sizeSections = dataInputStream.readInt();
-            SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
             for (int i = 0; i < sizeSections; i++) {
+                String sectionType = dataInputStream.readUTF();
                 switch (sectionType) {
-                    case OBJECTIVE:
-                    case PERSONAL:
-                        resume.addSection(sectionType, new ContentSection(dataInputStream.readUTF()));
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        resume.addSection(sectionType, new ContentSection(dataInputStream.readUTF()));
-                    case EXPERIENCE:
-                    case EDUCATION:
-                        resume.addSection(SectionType.valueOf(dataInputStream.readUTF()), new OrganizationSection(
-                                new Organization(dataInputStream.readUTF(), dataInputStream.readUTF(),
-                                        new Position(LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt()),
-                                                LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt()),
-                                                dataInputStream.readUTF(), dataInputStream.readUTF()))
-                        ));
+                    case "OBJECTIVE":
+                    case "PERSONAL":
+                        resume.addSection(SectionType.valueOf(sectionType), new ContentSection(dataInputStream.readUTF()));
+                        break;
+                    case "ACHIEVEMENT":
+                    case "QUALIFICATIONS":
+                        int listTextSectionSize = dataInputStream.readInt();
+                        for (int j = 0; j < listTextSectionSize; j++) {
+                            resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(dataInputStream.readUTF()));
+                        }
+                        break;
+                    case "EXPERIENCE":
+                    case "EDUCATION":
+                        int organizationListSize = dataInputStream.readInt();
+                        for (int j = 0; j < organizationListSize; j++) {
+                            resume.addSection(SectionType.valueOf(sectionType), new OrganizationSection(
+                                    new Organization(dataInputStream.readUTF(), dataInputStream.readUTF(),
+                                            new Position(LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt()),
+                                                    LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt()),
+                                                    dataInputStream.readUTF(), dataInputStream.readUTF()
+                                            )
+                                    )
+                            ));
+                        }
+                        break;
                 }
             }
             return resume;
