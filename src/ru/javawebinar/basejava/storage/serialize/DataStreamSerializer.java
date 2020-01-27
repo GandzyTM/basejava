@@ -44,7 +44,7 @@ public class DataStreamSerializer implements Serializer {
                         for (Organization item : ((OrganizationSection) section).getOrganizationList()) {
                             dataOutputStream.writeUTF(item.getHomePage().getName());
                             dataOutputStream.writeUTF(item.getHomePage().getUrl());
-
+                            dataOutputStream.writeInt(item.getPositions().size());
                             for (Position position : item.getPositions()) {
                                 dataOutputStream.writeInt(position.getStartDate().getYear());
                                 dataOutputStream.writeInt(position.getStartDate().getMonth().getValue());
@@ -92,14 +92,27 @@ public class DataStreamSerializer implements Serializer {
                     case "EDUCATION":
                         int organizationListSize = dataInputStream.readInt();
                         for (int j = 0; j < organizationListSize; j++) {
-                            resume.addSection(SectionType.valueOf(sectionType), new OrganizationSection(
-                                    new Organization(dataInputStream.readUTF(), dataInputStream.readUTF(),
-                                            new Position(LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt()),
-                                                    LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt()),
-                                                    dataInputStream.readUTF(), dataInputStream.readUTF()
-                                            )
-                                    )
-                            ));
+                            String name = dataInputStream.readUTF();
+                            String url = dataInputStream.readUTF();
+                            int positionsSize = dataInputStream.readInt();
+                            for (int k = 0; k < positionsSize; k++) {
+                                int startDateYear = dataInputStream.readInt();
+                                int startDateMonth = dataInputStream.readInt();
+                                int startDateDay = dataInputStream.readInt();
+                                int stopDateYear = dataInputStream.readInt();
+                                int stopDateMonth = dataInputStream.readInt();
+                                int stopDateDay = dataInputStream.readInt();
+                                String title = dataInputStream.readUTF();
+                                String description = dataInputStream.readUTF();
+                                resume.addSection(SectionType.valueOf(sectionType), new OrganizationSection(
+                                        new Organization(name, url,
+                                                new Position(LocalDate.of(startDateYear, startDateMonth, startDateDay),
+                                                        LocalDate.of(stopDateYear, stopDateMonth, stopDateDay),
+                                                        title, description
+                                                )
+                                        )
+                                ));
+                            }
                         }
                         break;
                 }
@@ -107,4 +120,6 @@ public class DataStreamSerializer implements Serializer {
             return resume;
         }
     }
+
+
 }
