@@ -13,21 +13,26 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = new File("C:\\Users\\pashkov-kv\\Documents\\GitHub\\basejava\\storage");
     protected Storage storage;
     private static final String UUID_1 = "uuid1";
-    private static final Resume R1 = new Resume(UUID_1, "resume uuid1");
     private static final String UUID_2 = "uuid2";
-    private static final Resume R2 = new Resume(UUID_2, "resume uuid2");
     private static final String UUID_3 = "uuid3";
-    private static final Resume R3 = new Resume(UUID_3, "resume uuid3");
     private static final String UUID_4 = "uuid4";
-    private static final Resume R4 = new Resume(UUID_4, "resume uuid4");
+
+    private static final Resume R1;
+    private static final Resume R2;
+    private static final Resume R3;
+    private static final Resume R4;
 
     static {
+        R1 = new Resume(UUID_1, "Name1");
+        R2 = new Resume(UUID_2, "Name2");
+        R3 = new Resume(UUID_3, "Name3");
+        R4 = new Resume(UUID_4, "Name4");
+
         R1.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
         R1.addContact(ContactType.PHONE, "+7(921) 855-0482");
         R1.addSection(SectionType.OBJECTIVE, new ContentSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям\n"));
@@ -134,7 +139,7 @@ public abstract class AbstractStorageTest {
     public void update() throws Exception {
         Resume newResume = new Resume(UUID_1, "New Name");
         storage.update(newResume);
-        assertTrue(newResume.equals(storage.get(UUID_1)));
+        assertEquals(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
