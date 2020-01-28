@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Resume resume = new Resume("new Resume");
+    public static void contentResume(Resume resume) {
 
         Map<ContactType, String> contacts = resume.getContacts();
         Map<SectionType, Section> sections = resume.getSections();
-        Organization organization = new Organization("Java Online Projects", "http://javaops.ru/",
-                new Position(LocalDate.of(2013, 3, 1), LocalDate.now(), "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
+//        Organization organization = new Organization("Java Online Projects", "http://javaops.ru/",
+//                new Position(LocalDate.of(2013, 3, 1), LocalDate.now(), "Автор проекта", "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
         contacts.put(ContactType.PHONE, "+7(921) 855-0482");
         contacts.put(ContactType.SKYPE, "grigory.kislin");
         contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
@@ -35,12 +34,12 @@ public class ResumeTestData {
         sections.put(SectionType.ACHIEVEMENT, new ListTextSection(achievement));
 
         List<String> qualifications = new ArrayList<>();
-        qualifications.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2\n");
-        qualifications.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce\n");
+        qualifications.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
+        qualifications.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
         qualifications.add("DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle,\n");
-        qualifications.add("MySQL, SQLite, MS SQL, HSQLDB\n");
-        qualifications.add("Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy,\n");
-        qualifications.add("XML/XSD/XSLT, SQL, C/C++, Unix shell scripts,\n");
+        qualifications.add("MySQL, SQLite, MS SQL, HSQLDB");
+        qualifications.add("Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy,");
+        qualifications.add("XML/XSD/XSLT, SQL, C/C++, Unix shell scripts,");
         qualifications.add("Java Frameworks: Java 8 (Time API, Streams), Guava, Java Executor, MyBatis, Spring (MVC, Security, Data, Clouds, Boot), JPA (Hibernate, EclipseLink), Guice, GWT(SmartGWT, ExtGWT/GXT), Vaadin, Jasperreports, Apache Commons, Eclipse SWT, JUnit, Selenium (htmlelements).\n");
         sections.put(SectionType.QUALIFICATIONS, new ListTextSection(qualifications));
 
@@ -50,23 +49,12 @@ public class ResumeTestData {
                 new Position(LocalDate.of(2013, 3, 1),
                         LocalDate.now(),
                         "Автор проекта",
-                        "Создание, организация и проведение Java онлайн проектов и стажировок.\n")));
+                        "Создание, организация и проведение Java онлайн проектов и стажировок.")));
         experience.add(new Organization("Wrike", "https://www.wrike.com/",
                 new Position(LocalDate.of(2014, 10, 1),
                         LocalDate.of(2016, 1, 1),
-                        "Старший разработчик (backend)\n",
-                        "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.\n")));
+                        "Старший разработчик (backend)",
+                        "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")));
         sections.put(SectionType.EXPERIENCE, new OrganizationSection(experience));
-        StringBuilder text = new StringBuilder();
-        text.append(SectionType.ACHIEVEMENT.getTitle())
-                .append(": ")
-                .append(sections.get(SectionType.ACHIEVEMENT))
-                .append("\n");
-        text.append(SectionType.EXPERIENCE.getTitle())
-                .append(": ")
-                .append(sections.get(SectionType.EXPERIENCE))
-                .append("\n");
-
-        System.out.println(text.toString());
     }
 }
