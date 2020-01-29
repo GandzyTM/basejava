@@ -53,7 +53,7 @@ public class ResumeTestData {
                                 new Position(LocalDate.of(2013, 3, 1),
                                         DateUtil.NOW,
                                         "Автор проекта",
-                                        "Создание, организация и проведение Java онлайн проектов и стажировок."
+                                         "Создание, организация и проведение Java онлайн проектов и стажировок."
                                 )
                         ),
         new Organization("Wrike", "https://www.wrike.com/",
