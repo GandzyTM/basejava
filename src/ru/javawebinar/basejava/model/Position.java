@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.Objects;
 
+import static ru.javawebinar.basejava.util.DateUtil.NOW;
 import static ru.javawebinar.basejava.util.DateUtil.of;
 
 public class Position implements Serializable {
@@ -26,7 +27,7 @@ public class Position implements Serializable {
                     Month startMonth,
                     String title,
                     String description) {
-        this(of(startYear, startMonth), LocalDate.now(), title, description);
+        this(of(startYear, startMonth), NOW, title, description);
     }
 
     public Position(int startYear,
