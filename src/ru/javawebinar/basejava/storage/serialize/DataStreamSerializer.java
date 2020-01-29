@@ -4,6 +4,8 @@ import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class DataStreamSerializer implements Serializer {
@@ -84,9 +86,11 @@ public class DataStreamSerializer implements Serializer {
                     case "ACHIEVEMENT":
                     case "QUALIFICATIONS":
                         int listTextSectionSize = dataInputStream.readInt();
+                        List<String> listTextSections = new ArrayList<>(listTextSectionSize);
                         for (int j = 0; j < listTextSectionSize; j++) {
-                            resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(dataInputStream.readUTF()));
+                            listTextSections.add(dataInputStream.readUTF());
                         }
+                        resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(listTextSections));
                         break;
                     case "EXPERIENCE":
                     case "EDUCATION":

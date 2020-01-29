@@ -35,8 +35,6 @@ public class ContentSection extends Section {
 
     @Override
     public String toString() {
-        return "ContentSection{" +
-                "content='" + content + '\'' +
-                '}';
+        return content;
     }
 }

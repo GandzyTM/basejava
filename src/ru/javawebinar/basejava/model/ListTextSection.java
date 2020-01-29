@@ -41,9 +41,7 @@ public class ListTextSection extends Section {
 
     @Override
     public String toString() {
-        return "ListText{" +
-                "list=" + items +
-                '}';
+        return items.toString();
     }
 }
 
