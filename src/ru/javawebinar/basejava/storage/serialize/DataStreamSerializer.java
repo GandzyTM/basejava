@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.storage.serialize;
 
+import javafx.geometry.Pos;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
@@ -95,10 +96,14 @@ public class DataStreamSerializer implements Serializer {
                     case "EXPERIENCE":
                     case "EDUCATION":
                         int organizationListSize = dataInputStream.readInt();
+                        List<Organization> organizationList = new ArrayList<>(organizationListSize);
                         for (int j = 0; j < organizationListSize; j++) {
                             String name = dataInputStream.readUTF();
                             String url = dataInputStream.readUTF();
+                            organizationList.add(name);
+                            organizationList.add(url);
                             int positionsSize = dataInputStream.readInt();
+                            List<Position> positionsList = new ArrayList<>();
                             for (int k = 0; k < positionsSize; k++) {
                                 int startDateYear = dataInputStream.readInt();
                                 int startDateMonth = dataInputStream.readInt();
@@ -108,22 +113,18 @@ public class DataStreamSerializer implements Serializer {
                                 int stopDateDay = dataInputStream.readInt();
                                 String title = dataInputStream.readUTF();
                                 String description = dataInputStream.readUTF();
-                                resume.addSection(SectionType.valueOf(sectionType), new OrganizationSection(
-                                        new Organization(name, url,
-                                                new Position(LocalDate.of(startDateYear, startDateMonth, startDateDay),
-                                                        LocalDate.of(stopDateYear, stopDateMonth, stopDateDay),
-                                                        title, description
-                                                )
-                                        )
+                                positionsList.add(new Position(LocalDate.of(startDateYear, startDateMonth, startDateDay),
+                                        LocalDate.of(stopDateYear, stopDateMonth, stopDateDay),
+                                        title, description
                                 ));
                             }
+                            organizationList.addAll(positionsList);
                         }
+                        resume.addSection(SectionType.valueOf(sectionType), new OrganizationSection(organizationList));
                         break;
                 }
             }
             return resume;
         }
     }
-
-
 }

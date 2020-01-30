@@ -25,7 +25,6 @@ public class ResumeTestData {
                 new ContentSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 
         sections.put(SectionType.ACHIEVEMENT,
-//                new ListTextSection("Achivment11", "Achivment12", "Achivment13")
                 new ListTextSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\",\"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.",
                         "Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.",
                         "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением на стеке: Scala/Play/Anorm/JQuery. Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.",
@@ -53,22 +52,24 @@ public class ResumeTestData {
                                 new Position(LocalDate.of(2013, 3, 1),
                                         DateUtil.NOW,
                                         "Автор проекта",
-                                         "Создание, организация и проведение Java онлайн проектов и стажировок."
+                                        "Создание, организация и проведение Java онлайн проектов и стажировок."
                                 )
                         ),
-        new Organization("Wrike", "https://www.wrike.com/",
-                new Position(LocalDate.of(2014, 10, 1),
-                        LocalDate.of(2016, 1, 1),
-                        "Старший разработчик (backend)",
-                        "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))
+                        new Organization("Wrike", "https://www.wrike.com/",
+                                new Position(LocalDate.of(2014, 10, 1),
+                                        LocalDate.of(2016, 1, 1),
+                                        "Старший разработчик (backend)",
+                                        "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."))
                 )
         );
+
         sections.put(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Institute", "rty",
                                 new Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", "rty"),
-        new Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
-        new Organization("Organization12", "http://Organization12.ru")
-                ));
+                                new Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
+                        new Organization("Organization12", "http://Organization12.ru")
+                )
+        );
     }
 }
