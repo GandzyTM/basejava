@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage.serialize;
 
-import javafx.geometry.Pos;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.*;
@@ -26,9 +25,9 @@ public class DataStreamSerializer implements Serializer {
             Map<SectionType, Section> sections = resume.getSections();
             dataOutputStream.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                dataOutputStream.writeUTF(entry.getKey().name());
                 SectionType sectionType = entry.getKey();
                 Section section = entry.getValue();
+                dataOutputStream.writeUTF(sectionType.name());
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
@@ -95,13 +94,12 @@ public class DataStreamSerializer implements Serializer {
                         break;
                     case "EXPERIENCE":
                     case "EDUCATION":
-                        int organizationListSize = dataInputStream.readInt();
-                        List<Organization> organizationList = new ArrayList<>(organizationListSize);
-                        for (int j = 0; j < organizationListSize; j++) {
+                        int listOrganizationSectionSize = dataInputStream.readInt();
+                        List<Organization> listOrganizationSection = new ArrayList<>(listOrganizationSectionSize);
+                        for (int j = 0; j < listOrganizationSectionSize; j++) {
                             String name = dataInputStream.readUTF();
                             String url = dataInputStream.readUTF();
-                            organizationList.add(name);
-                            organizationList.add(url);
+                            Link link = new Link(name, url);
                             int positionsSize = dataInputStream.readInt();
                             List<Position> positionsList = new ArrayList<>();
                             for (int k = 0; k < positionsSize; k++) {
@@ -118,9 +116,9 @@ public class DataStreamSerializer implements Serializer {
                                         title, description
                                 ));
                             }
-                            organizationList.addAll(positionsList);
+                            listOrganizationSection.add(new Organization(link, positionsList));
                         }
-                        resume.addSection(SectionType.valueOf(sectionType), new OrganizationSection(organizationList));
+                        resume.addSection(SectionType.valueOf(sectionType), new OrganizationSection(listOrganizationSection));
                         break;
                 }
             }
