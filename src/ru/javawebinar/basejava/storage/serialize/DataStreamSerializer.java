@@ -21,7 +21,6 @@ public class DataStreamSerializer implements Serializer {
                 dataOutputStream.writeUTF(entry.getKey().name());
                 dataOutputStream.writeUTF(entry.getValue());
             }
-            //TODO sections
             Map<SectionType, Section> sections = resume.getSections();
             dataOutputStream.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
@@ -48,12 +47,8 @@ public class DataStreamSerializer implements Serializer {
                             dataOutputStream.writeUTF(item.getHomePage().getUrl());
                             dataOutputStream.writeInt(item.getPositions().size());
                             for (Position position : item.getPositions()) {
-                                dataOutputStream.writeInt(position.getStartDate().getYear());
-                                dataOutputStream.writeInt(position.getStartDate().getMonth().getValue());
-                                dataOutputStream.writeInt(position.getStartDate().getDayOfMonth());
-                                dataOutputStream.writeInt(position.getEndDate().getYear());
-                                dataOutputStream.writeInt(position.getEndDate().getMonth().getValue());
-                                dataOutputStream.writeInt(position.getEndDate().getDayOfMonth());
+                                writeLocalDate(dataOutputStream, position.getStartDate());
+                                writeLocalDate(dataOutputStream, position.getEndDate());
                                 dataOutputStream.writeUTF(position.getTitle());
                                 dataOutputStream.writeUTF(position.getDescription());
                             }
@@ -62,6 +57,14 @@ public class DataStreamSerializer implements Serializer {
             }
         }
     }
+
+    private void writeLocalDate(DataOutputStream dataOutputStream, LocalDate localDate) throws IOException {
+        dataOutputStream.writeInt(localDate.getYear());
+        dataOutputStream.writeInt(localDate.getMonth().getValue());
+        dataOutputStream.writeInt(localDate.getDayOfMonth());
+    }
+
+    private void writeWithException(DataOutputStream dataOutputStream, )
 
     @Override
     public Resume doRead(InputStream inputStream) throws IOException {
@@ -73,27 +76,25 @@ public class DataStreamSerializer implements Serializer {
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF());
             }
-
-            // TODO sections
             int sizeSections = dataInputStream.readInt();
             for (int i = 0; i < sizeSections; i++) {
-                String sectionType = dataInputStream.readUTF();
+                SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
                 switch (sectionType) {
-                    case "OBJECTIVE":
-                    case "PERSONAL":
-                        resume.addSection(SectionType.valueOf(sectionType), new ContentSection(dataInputStream.readUTF()));
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        resume.addSection(sectionType, new ContentSection(dataInputStream.readUTF()));
                         break;
-                    case "ACHIEVEMENT":
-                    case "QUALIFICATIONS":
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
                         int listTextSectionSize = dataInputStream.readInt();
                         List<String> listTextSections = new ArrayList<>(listTextSectionSize);
                         for (int j = 0; j < listTextSectionSize; j++) {
                             listTextSections.add(dataInputStream.readUTF());
                         }
-                        resume.addSection(SectionType.valueOf(sectionType), new ListTextSection(listTextSections));
+                        resume.addSection(sectionType, new ListTextSection(listTextSections));
                         break;
-                    case "EXPERIENCE":
-                    case "EDUCATION":
+                    case EXPERIENCE:
+                    case EDUCATION:
                         int listOrganizationSectionSize = dataInputStream.readInt();
                         List<Organization> listOrganizationSection = new ArrayList<>(listOrganizationSectionSize);
                         for (int j = 0; j < listOrganizationSectionSize; j++) {
@@ -103,26 +104,22 @@ public class DataStreamSerializer implements Serializer {
                             int positionsSize = dataInputStream.readInt();
                             List<Position> positionsList = new ArrayList<>();
                             for (int k = 0; k < positionsSize; k++) {
-                                int startDateYear = dataInputStream.readInt();
-                                int startDateMonth = dataInputStream.readInt();
-                                int startDateDay = dataInputStream.readInt();
-                                int stopDateYear = dataInputStream.readInt();
-                                int stopDateMonth = dataInputStream.readInt();
-                                int stopDateDay = dataInputStream.readInt();
-                                String title = dataInputStream.readUTF();
-                                String description = dataInputStream.readUTF();
-                                positionsList.add(new Position(LocalDate.of(startDateYear, startDateMonth, startDateDay),
-                                        LocalDate.of(stopDateYear, stopDateMonth, stopDateDay),
-                                        title, description
+                                positionsList.add(new Position(readLocalDate(dataInputStream),
+                                        readLocalDate(dataInputStream),
+                                        dataInputStream.readUTF(), dataInputStream.readUTF()
                                 ));
                             }
                             listOrganizationSection.add(new Organization(link, positionsList));
                         }
-                        resume.addSection(SectionType.valueOf(sectionType), new OrganizationSection(listOrganizationSection));
+                        resume.addSection(sectionType, new OrganizationSection(listOrganizationSection));
                         break;
                 }
             }
             return resume;
         }
+    }
+
+    private LocalDate readLocalDate(DataInputStream dataInputStream) throws IOException {
+        return LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt());
     }
 }
