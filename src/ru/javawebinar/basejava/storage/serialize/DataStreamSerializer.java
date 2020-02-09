@@ -5,8 +5,10 @@ import ru.javawebinar.basejava.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class DataStreamSerializer implements Serializer {
 
@@ -16,11 +18,14 @@ public class DataStreamSerializer implements Serializer {
             dataOutputStream.writeUTF(resume.getUuid());
             dataOutputStream.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            dataOutputStream.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                dataOutputStream.writeUTF(entry.getKey().name());
-                dataOutputStream.writeUTF(entry.getValue());
-            }
+            writeWithException(dataOutputStream, contacts.entrySet(), contactTypeStringEntry -> {
+                try {
+                    dataOutputStream.writeUTF(contactTypeStringEntry.getKey().name());
+                    dataOutputStream.writeUTF(contactTypeStringEntry.getValue());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
             Map<SectionType, Section> sections = resume.getSections();
             dataOutputStream.writeInt(sections.size());
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
@@ -64,7 +69,12 @@ public class DataStreamSerializer implements Serializer {
         dataOutputStream.writeInt(localDate.getDayOfMonth());
     }
 
-    private void writeWithException(DataOutputStream dataOutputStream, )
+    private <T> void writeWithException(DataOutputStream dataOutputStream, Collection<T> collection, Consumer<T> consumer) throws IOException {
+        dataOutputStream.writeInt(collection.size());
+        for (T item : collection) {
+            consumer.accept(item);
+        }
+    }
 
     @Override
     public Resume doRead(InputStream inputStream) throws IOException {
