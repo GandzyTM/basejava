@@ -27,39 +27,45 @@ public class DataStreamSerializer implements Serializer {
                 }
             });
             Map<SectionType, Section> sections = resume.getSections();
-            dataOutputStream.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                SectionType sectionType = entry.getKey();
-                Section section = entry.getValue();
-                dataOutputStream.writeUTF(sectionType.name());
-                switch (sectionType) {
-                    case OBJECTIVE:
-                    case PERSONAL:
-                        dataOutputStream.writeUTF(((ContentSection) section).getContent());
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        dataOutputStream.writeInt(((ListTextSection) section).getItems().size());
-                        for (String item : ((ListTextSection) section).getItems()) {
-                            dataOutputStream.writeUTF(item);
-                        }
-                        break;
-                    case EXPERIENCE:
-                    case EDUCATION:
-                        dataOutputStream.writeInt(((OrganizationSection) section).getOrganizationList().size());
-                        for (Organization item : ((OrganizationSection) section).getOrganizationList()) {
-                            dataOutputStream.writeUTF(item.getHomePage().getName());
-                            dataOutputStream.writeUTF(item.getHomePage().getUrl());
-                            dataOutputStream.writeInt(item.getPositions().size());
-                            for (Position position : item.getPositions()) {
-                                writeLocalDate(dataOutputStream, position.getStartDate());
-                                writeLocalDate(dataOutputStream, position.getEndDate());
-                                dataOutputStream.writeUTF(position.getTitle());
-                                dataOutputStream.writeUTF(position.getDescription());
+            writeWithException(dataOutputStream, sections.entrySet(), sectionTypeSectionEntry -> {
+                SectionType sectionType = sectionTypeSectionEntry.getKey();
+                Section section = sectionTypeSectionEntry.getValue();
+                try {
+                    dataOutputStream.writeUTF(sectionType.name());
+                    switch (sectionType) {
+                        case OBJECTIVE:
+                        case PERSONAL:
+                            dataOutputStream.writeUTF(((ContentSection) section).getContent());
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            writeWithException(dataOutputStream, ((ListTextSection) section).getItems(), s -> {
+                                try {
+                                    dataOutputStream.writeUTF(s);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            dataOutputStream.writeInt(((OrganizationSection) section).getOrganizationList().size());
+                            for (Organization item : ((OrganizationSection) section).getOrganizationList()) {
+                                dataOutputStream.writeUTF(item.getHomePage().getName());
+                                dataOutputStream.writeUTF(item.getHomePage().getUrl());
+                                dataOutputStream.writeInt(item.getPositions().size());
+                                for (Position position : item.getPositions()) {
+                                    writeLocalDate(dataOutputStream, position.getStartDate());
+                                    writeLocalDate(dataOutputStream, position.getEndDate());
+                                    dataOutputStream.writeUTF(position.getTitle());
+                                    dataOutputStream.writeUTF(position.getDescription());
+                                }
                             }
-                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }
+            });
         }
     }
 
