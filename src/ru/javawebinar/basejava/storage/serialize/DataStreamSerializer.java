@@ -52,6 +52,42 @@ public class DataStreamSerializer implements Serializer {
         }
     }
 
+    @Override
+    public Resume doRead(InputStream inputStream) throws IOException {
+        try (DataInputStream dataInputStream = new DataInputStream(inputStream)) {
+            String uuid = dataInputStream.readUTF();
+            String fullName = dataInputStream.readUTF();
+            Resume resume = new Resume(uuid, fullName);
+            readElements(dataInputStream, () -> resume.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF()));
+            int sizeSections = dataInputStream.readInt();
+            for (int i = 0; i < sizeSections; i++) {
+                SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        resume.addSection(sectionType, new ContentSection(dataInputStream.readUTF()));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        resume.addSection(sectionType, new ListTextSection(readCollection(dataInputStream, dataInputStream::readUTF)));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        resume.addSection(sectionType, new OrganizationSection(
+                                readCollection(dataInputStream, () -> new Organization(
+                                        new Link(dataInputStream.readUTF(), dataInputStream.readUTF()),
+                                        readCollection(dataInputStream, () -> new Position(
+                                                readLocalDate(dataInputStream), readLocalDate(dataInputStream), dataInputStream.readUTF(), dataInputStream.readUTF()
+                                        ))
+                                ))
+                        ));
+                        break;
+                }
+            }
+            return resume;
+        }
+    }
+
     private void writeLocalDate(DataOutputStream dataOutputStream, LocalDate localDate) throws IOException {
         dataOutputStream.writeInt(localDate.getYear());
         dataOutputStream.writeInt(localDate.getMonth().getValue());
@@ -69,60 +105,31 @@ public class DataStreamSerializer implements Serializer {
         void write(T var1) throws IOException;
     }
 
-    @Override
-    public Resume doRead(InputStream inputStream) throws IOException {
-        try (DataInputStream dataInputStream = new DataInputStream(inputStream)) {
-            String uuid = dataInputStream.readUTF();
-            String fullName = dataInputStream.readUTF();
-            Resume resume = new Resume(uuid, fullName);
-            int size = dataInputStream.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF());
-            }
-            int sizeSections = dataInputStream.readInt();
-            for (int i = 0; i < sizeSections; i++) {
-                SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
-                switch (sectionType) {
-                    case OBJECTIVE:
-                    case PERSONAL:
-                        resume.addSection(sectionType, new ContentSection(dataInputStream.readUTF()));
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        int listTextSectionSize = dataInputStream.readInt();
-                        List<String> listTextSections = new ArrayList<>(listTextSectionSize);
-                        for (int j = 0; j < listTextSectionSize; j++) {
-                            listTextSections.add(dataInputStream.readUTF());
-                        }
-                        resume.addSection(sectionType, new ListTextSection(listTextSections));
-                        break;
-                    case EXPERIENCE:
-                    case EDUCATION:
-                        int listOrganizationSectionSize = dataInputStream.readInt();
-                        List<Organization> listOrganizationSection = new ArrayList<>(listOrganizationSectionSize);
-                        for (int j = 0; j < listOrganizationSectionSize; j++) {
-                            String name = dataInputStream.readUTF();
-                            String url = dataInputStream.readUTF();
-                            Link link = new Link(name, url);
-                            int positionsSize = dataInputStream.readInt();
-                            List<Position> positionsList = new ArrayList<>();
-                            for (int k = 0; k < positionsSize; k++) {
-                                positionsList.add(new Position(readLocalDate(dataInputStream),
-                                        readLocalDate(dataInputStream),
-                                        dataInputStream.readUTF(), dataInputStream.readUTF()
-                                ));
-                            }
-                            listOrganizationSection.add(new Organization(link, positionsList));
-                        }
-                        resume.addSection(sectionType, new OrganizationSection(listOrganizationSection));
-                        break;
-                }
-            }
-            return resume;
+    private LocalDate readLocalDate(DataInputStream dataInputStream) throws IOException {
+        return LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt());
+    }
+
+    private <T> List<T> readCollection(DataInputStream dataInputStream, Reader<T> reader) throws IOException {
+        int size = dataInputStream.readInt();
+        List<T> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(reader.read());
+        }
+        return list;
+    }
+
+    private void readElements(DataInputStream dataInputStream, ElementReader elementReader) throws IOException {
+        int size = dataInputStream.readInt();
+        for (int i = 0; i < size; i++) {
+            elementReader.read();
         }
     }
 
-    private LocalDate readLocalDate(DataInputStream dataInputStream) throws IOException {
-        return LocalDate.of(dataInputStream.readInt(), dataInputStream.readInt(), dataInputStream.readInt());
+    private interface Reader<T> {
+        T read() throws IOException;
+    }
+
+    private interface ElementReader {
+        void read() throws IOException;
     }
 }
