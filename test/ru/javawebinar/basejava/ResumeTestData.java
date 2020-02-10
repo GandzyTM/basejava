@@ -66,8 +66,10 @@ public class ResumeTestData {
         sections.put(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Institute", "rty",
-                                new Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", "rty"),
-                                new Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
+                                new Position(1996, Month.JANUARY, 2000, Month.DECEMBER,
+                                        "aspirant", "rty"),
+                                new Position(2001, Month.MARCH, 2005, Month.JANUARY,
+                                        "student", null)),
                         new Organization("Organization12", "http://Organization12.ru")
                 )
         );

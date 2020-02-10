@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class DataStreamSerializer implements Serializer {
 
@@ -18,52 +17,36 @@ public class DataStreamSerializer implements Serializer {
             dataOutputStream.writeUTF(resume.getUuid());
             dataOutputStream.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            writeWithException(dataOutputStream, contacts.entrySet(), contactTypeStringEntry -> {
-                try {
-                    dataOutputStream.writeUTF(contactTypeStringEntry.getKey().name());
-                    dataOutputStream.writeUTF(contactTypeStringEntry.getValue());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            writeCollection(dataOutputStream, contacts.entrySet(), contactTypeStringEntry -> {
+                dataOutputStream.writeUTF(contactTypeStringEntry.getKey().name());
+                dataOutputStream.writeUTF(contactTypeStringEntry.getValue());
             });
             Map<SectionType, Section> sections = resume.getSections();
-            writeWithException(dataOutputStream, sections.entrySet(), sectionTypeSectionEntry -> {
+            writeCollection(dataOutputStream, sections.entrySet(), sectionTypeSectionEntry -> {
                 SectionType sectionType = sectionTypeSectionEntry.getKey();
                 Section section = sectionTypeSectionEntry.getValue();
-                try {
-                    dataOutputStream.writeUTF(sectionType.name());
-                    switch (sectionType) {
-                        case OBJECTIVE:
-                        case PERSONAL:
-                            dataOutputStream.writeUTF(((ContentSection) section).getContent());
-                            break;
-                        case ACHIEVEMENT:
-                        case QUALIFICATIONS:
-                            writeWithException(dataOutputStream, ((ListTextSection) section).getItems(), s -> {
-                                try {
-                                    dataOutputStream.writeUTF(s);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                dataOutputStream.writeUTF(sectionType.name());
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        dataOutputStream.writeUTF(((ContentSection) section).getContent());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        writeCollection(dataOutputStream, ((ListTextSection) section).getItems(), dataOutputStream::writeUTF);
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        writeCollection(dataOutputStream, ((OrganizationSection) section).getOrganizationList(), organization -> {
+                            dataOutputStream.writeUTF(organization.getHomePage().getName());
+                            dataOutputStream.writeUTF(organization.getHomePage().getUrl());
+                            writeCollection(dataOutputStream, organization.getPositions(), position -> {
+                                writeLocalDate(dataOutputStream, position.getStartDate());
+                                writeLocalDate(dataOutputStream, position.getEndDate());
+                                dataOutputStream.writeUTF(position.getTitle());
+                                dataOutputStream.writeUTF(position.getDescription());
                             });
-                            break;
-                        case EXPERIENCE:
-                        case EDUCATION:
-                            dataOutputStream.writeInt(((OrganizationSection) section).getOrganizationList().size());
-                            for (Organization item : ((OrganizationSection) section).getOrganizationList()) {
-                                dataOutputStream.writeUTF(item.getHomePage().getName());
-                                dataOutputStream.writeUTF(item.getHomePage().getUrl());
-                                dataOutputStream.writeInt(item.getPositions().size());
-                                for (Position position : item.getPositions()) {
-                                    writeLocalDate(dataOutputStream, position.getStartDate());
-                                    writeLocalDate(dataOutputStream, position.getEndDate());
-                                    dataOutputStream.writeUTF(position.getTitle());
-                                    dataOutputStream.writeUTF(position.getDescription());
-                                }
-                            }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                        });
                 }
             });
         }
@@ -75,11 +58,15 @@ public class DataStreamSerializer implements Serializer {
         dataOutputStream.writeInt(localDate.getDayOfMonth());
     }
 
-    private <T> void writeWithException(DataOutputStream dataOutputStream, Collection<T> collection, Consumer<T> consumer) throws IOException {
+    private <T> void writeCollection(DataOutputStream dataOutputStream, Collection<T> collection, Writer<T> writer) throws IOException {
         dataOutputStream.writeInt(collection.size());
         for (T item : collection) {
-            consumer.accept(item);
+            writer.write(item);
         }
+    }
+
+    private interface Writer<T> {
+        void write(T var1) throws IOException;
     }
 
     @Override
