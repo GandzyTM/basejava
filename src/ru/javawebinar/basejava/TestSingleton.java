@@ -1,8 +1,6 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Organization;
-import ru.javawebinar.basejava.model.OrganizationSection;
 import ru.javawebinar.basejava.model.SectionType;
 
 public class TestSingleton {
