@@ -59,34 +59,38 @@ public class DataStreamSerializer implements Serializer {
             String fullName = dataInputStream.readUTF();
             Resume resume = new Resume(uuid, fullName);
             readElements(dataInputStream, () -> resume.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF()));
-            int sizeSections = dataInputStream.readInt();
-            for (int i = 0; i < sizeSections; i++) {
-                SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
-                switch (sectionType) {
-                    case OBJECTIVE:
-                    case PERSONAL:
-                        resume.addSection(sectionType, new ContentSection(dataInputStream.readUTF()));
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        resume.addSection(sectionType, new ListTextSection(readCollection(dataInputStream, dataInputStream::readUTF)));
-                        break;
-                    case EXPERIENCE:
-                    case EDUCATION:
-                        resume.addSection(sectionType, new OrganizationSection(
-                                readCollection(dataInputStream, () -> new Organization(
-                                        new Link(dataInputStream.readUTF(), dataInputStream.readUTF()),
-                                        readCollection(dataInputStream, () -> new Position(
-                                                readLocalDate(dataInputStream), readLocalDate(dataInputStream), dataInputStream.readUTF(), dataInputStream.readUTF()
-                                        ))
-                                ))
-                        ));
-                        break;
-                }
-            }
+            readElements(dataInputStream, () -> {
+                        SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
+                        resume.addSection(sectionType, readSection(dataInputStream, sectionType)
+                        );
+                    }
+            );
             return resume;
         }
     }
+
+    private Section readSection(DataInputStream dataInputStream, SectionType sectionType) throws IOException {
+        switch (sectionType) {
+            case OBJECTIVE:
+            case PERSONAL:
+                return new ContentSection(dataInputStream.readUTF());
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                return new ListTextSection(readCollection(dataInputStream, dataInputStream::readUTF));
+            case EXPERIENCE:
+            case EDUCATION:
+                return new OrganizationSection(
+                        readCollection(dataInputStream, () -> new Organization(
+                                new Link(dataInputStream.readUTF(), dataInputStream.readUTF()),
+                                readCollection(dataInputStream, () -> new Position(
+                                        readLocalDate(dataInputStream), readLocalDate(dataInputStream), dataInputStream.readUTF(), dataInputStream.readUTF()
+                                ))
+                        ))
+                );
+        }
+        return null;
+    }
+
 
     private void writeLocalDate(DataOutputStream dataOutputStream, LocalDate localDate) throws IOException {
         dataOutputStream.writeInt(localDate.getYear());
