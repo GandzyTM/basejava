@@ -1,3 +1,5 @@
+create schema resume;
+
 create table resume.resume
 (
     uuid      char(36) not null
