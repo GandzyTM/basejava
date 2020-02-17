@@ -33,10 +33,10 @@ public abstract class AbstractStorageTest {
         R3 = new Resume(UUID_3, "Name3");
         R4 = new Resume(UUID_4, "Name4");
 
-        ResumeTestData.contentResume(R1);
-        ResumeTestData.contentResume(R2);
-        ResumeTestData.contentResume(R3);
-        ResumeTestData.contentResume(R4);
+//        ResumeTestData.contentResume(R1);
+//        ResumeTestData.contentResume(R2);
+//        ResumeTestData.contentResume(R3);
+//        ResumeTestData.contentResume(R4);
     }
 
     protected AbstractStorageTest(Storage storage) {
