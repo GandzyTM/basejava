@@ -7,7 +7,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    protected static final File PROPS = new File("C:\\Users\\pashkov-kv\\Documents\\GitHub\\basejava\\config\\resumes.properties");
+//    protected static final File PROPS = new File("C:\\Users\\pashkov-kv\\Documents\\GitHub\\basejava\\config\\resumes.properties");
+    protected static final File PROPS = new File("C:\\Users\\GANDZY\\Documents\\GitHub\\basejava\\config\\resumes.properties");
     private static final Config INSTANCE = new Config();
     private File storageDir;
     private String url;
